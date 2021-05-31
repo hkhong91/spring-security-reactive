@@ -1,0 +1,29 @@
+###
+GET http://localhost:8080/v1/books?title=tdd&page=0&size=5
+
+###
+GET http://localhost:8080/books/60b4848917b9a9785726cde3
+
+###
+POST http://localhost:8080/books
+Content-Type: application/json
+
+{
+  "title": "TDD",
+  "authors": [
+    "Kent"
+  ],
+  "publishedYear": 2021
+}
+
+###
+PATCH http://localhost:8080/v1/books/60b4848917b9a9785726cde3
+Content-Type: application/json
+
+{
+  "title": "TDD!",
+  "authors": [
+    "Kent", "Rupee"
+  ],
+  "publishedYear": 2021
+}

@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.5.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'org.asciidoctor.convert' version '1.5.8'
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
     id 'java'
 }
 
@@ -28,6 +29,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'io.projectreactor.addons:reactor-extra'
+    implementation 'com.querydsl:querydsl-mongodb'
+    implementation 'com.querydsl:querydsl-apt'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -44,4 +48,24 @@ test {
 asciidoctor {
     inputs.dir snippetsDir
     dependsOn test
+}
+
+def querydslGeneratedDir = "$buildDir/generated/querydsl" as Object
+
+querydsl {
+    library = "com.querydsl:querydsl-apt"
+    springDataMongo = true
+    querydslSourcesDir = querydslGeneratedDir
+}
+
+sourceSets {
+    main.java.srcDir querydslGeneratedDir
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
 }
