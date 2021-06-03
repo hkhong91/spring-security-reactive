@@ -17,13 +17,16 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:8080/v1/books/60b4848917b9a9785726cde3
+PATCH http://localhost:8080/v2/books/60b47d0f3ede4d1ec319770b
 Content-Type: application/json
 
 {
   "title": "TDD!",
   "authors": [
-    "Kent", "Rupee"
+    "Kent"
   ],
   "publishedYear": 2021
 }
+
+###
+DELETE http://localhost:8080/v2/books/60b4848917b9a9785726cde3

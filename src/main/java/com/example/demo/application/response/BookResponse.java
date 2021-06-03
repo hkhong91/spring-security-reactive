@@ -15,6 +15,7 @@ public class BookResponse {
   private final Set<String> authors;
   private final int publishedYear;
   private final LocalDateTime createdAt;
+  private final LocalDateTime updatedAt;
 
   public static BookResponse of(Book book) {
     return BookResponse.builder()
@@ -23,6 +24,7 @@ public class BookResponse {
         .authors(book.getAuthors())
         .publishedYear(book.getPublishedYear())
         .createdAt(book.getCreatedAt())
+        .updatedAt(book.getUpdatedAt())
         .build();
   }
 }

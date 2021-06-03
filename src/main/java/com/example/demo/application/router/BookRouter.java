@@ -22,6 +22,8 @@ public class BookRouter {
         .PATCH("/v2/books/{id}", bookHandler::updateBookV2)
         .PATCH("/v3/books/{id}", bookHandler::updateBookV3)
         .PATCH("/v4/books/{id}", bookHandler::updateBookV4)
+        .DELETE("/v1/books/{id}", bookHandler::deleteBookV1)
+        .DELETE("/v2/books/{id}", bookHandler::deleteBookV2)
         .build();
   }
 }

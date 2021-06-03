@@ -7,6 +7,7 @@ import com.example.demo.domain.document.Book;
 import com.example.demo.domain.document.QBook;
 import com.example.demo.domain.repository.BookReactiveMongoRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -127,9 +128,23 @@ public class BookHandler {
           Query query = Query.query(criteria);
           Update update = Update.update("title", requestBody.getTitle())
               .set("authors", requestBody.getAuthors())
-              .set("publishedYear", requestBody.getPublishedYear());
+              .set("publishedYear", requestBody.getPublishedYear())
+              .set("updatedAt", LocalDateTime.now());
           return reactiveMongoOperations.findAndModify(query, update, Book.class);
         })
+        .flatMap(book -> ServerResponse.ok().bodyValue(BookResponse.of(book)));
+  }
+
+  public Mono<ServerResponse> deleteBookV1(ServerRequest request) {
+    String id = request.pathVariable("id");
+    return ServerResponse.ok().build(bookReactiveMongoRepository.deleteById(id));
+  }
+
+  public Mono<ServerResponse> deleteBookV2(ServerRequest request) {
+    String id = request.pathVariable("id");
+    Criteria criteria = Criteria.where("id").is(id);
+    Query query = Query.query(criteria);
+    return reactiveMongoOperations.findAndRemove(query, Book.class)
         .flatMap(book -> ServerResponse.ok().bodyValue(BookResponse.of(book)));
   }
 }
