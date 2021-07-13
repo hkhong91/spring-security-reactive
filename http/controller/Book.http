@@ -1,8 +1,8 @@
 ###
-GET http://localhost:8080/v1/books?title=tdd&page=0&size=5
+GET http://localhost:8080/books/60ed38c2e817435eb9fd5699
 
 ###
-GET http://localhost:8080/books/60b4848917b9a9785726cde3
+GET http://localhost:8080/books
 
 ###
 POST http://localhost:8080/books
@@ -17,11 +17,11 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:8080/v2/books/60b47d0f3ede4d1ec319770b
+PUT http://localhost:8080/books/60ed38c2e817435eb9fd5699
 Content-Type: application/json
 
 {
-  "title": "TDD!",
+  "title": "TDD",
   "authors": [
     "Kent"
   ],
@@ -29,4 +29,16 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8080/v2/books/60b4848917b9a9785726cde3
+PATCH http://localhost:8080/books/60ed38c2e817435eb9fd5699
+Content-Type: application/json
+
+{
+  "title": "Webflux",
+  "authors": [
+    "Rupee"
+  ],
+  "publishedYear": 2021
+}
+
+###
+DELETE http://localhost:8080/books/60ed3cca8b089e41ff2f9951

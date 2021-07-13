@@ -5,7 +5,7 @@ import java.util.Set;
 import lombok.Getter;
 
 @Getter
-public class BookUpdateRequest {
+public class BookRequest {
 
   private String title;
   private Set<String> authors;
@@ -13,6 +13,15 @@ public class BookUpdateRequest {
 
   public Book toBook() {
     return Book.builder()
+        .title(this.title)
+        .authors(this.authors)
+        .publishedYear(this.publishedYear)
+        .build();
+  }
+
+  public Book toBook(String bookId) {
+    return Book.builder()
+        .id(bookId)
         .title(this.title)
         .authors(this.authors)
         .publishedYear(this.publishedYear)
