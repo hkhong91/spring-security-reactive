@@ -1,6 +1,9 @@
 package com.example.demo.application.controller;
 
+import com.example.demo.application.security.SigninUser;
+import com.example.demo.application.request.BookHitRequest;
 import com.example.demo.application.request.BookRequest;
+import com.example.demo.application.response.BookHitResponse;
 import com.example.demo.application.response.BookResponse;
 import com.example.demo.application.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +16,7 @@ import reactor.core.publisher.Mono;
 public class BookController {
 
   private final BookService bookService;
+  private final SigninUser signinUser;
 
   @GetMapping("/books/{bookId}")
   public Mono<BookResponse> getBook(@PathVariable String bookId) {
@@ -29,12 +33,6 @@ public class BookController {
     return bookService.createBook(request);
   }
 
-  @PutMapping("/books/{bookId}")
-  public Mono<BookResponse> replaceBook(@PathVariable String bookId,
-                                       @RequestBody BookRequest request) {
-    return bookService.replaceBook(bookId, request);
-  }
-
   @PatchMapping("/books/{bookId}")
   public Mono<BookResponse> updateBook(@PathVariable String bookId,
                                        @RequestBody BookRequest request) {
@@ -44,5 +42,11 @@ public class BookController {
   @DeleteMapping("/books/{bookId}")
   public Mono<Void> deleteBook(@PathVariable String bookId) {
     return bookService.deleteBook(bookId);
+  }
+
+  @PutMapping("/books/{bookId}/hits")
+  public Mono<BookHitResponse> hitBook(@PathVariable String bookId,
+                                       @RequestBody BookHitRequest request) {
+    return bookService.hitBook(bookId, request, this.signinUser);
   }
 }

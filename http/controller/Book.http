@@ -1,44 +1,38 @@
 ###
-GET http://localhost:8080/books/60ed38c2e817435eb9fd5699
+GET {{server}}/books/60f14a9152e0b22dddfe1e20
 
 ###
-GET http://localhost:8080/books
+GET {{server}}/books
 
 ###
-POST http://localhost:8080/books
+POST {{server}}/books
 Content-Type: application/json
 
 {
-  "title": "TDD",
+  "title": "MongoDB 완벽 가이드",
+  "introduction": "NOSQL의 진수 몽고DB 개발부터 관리까지",
   "authors": [
-    "Kent"
+    "크리스티나 초도로우"
   ],
-  "publishedYear": 2021
+  "publishedDate": "2021-03-22"
 }
 
 ###
-PUT http://localhost:8080/books/60ed38c2e817435eb9fd5699
+PATCH {{server}}/books/60f263bc840d0732de280d6d
 Content-Type: application/json
 
 {
-  "title": "TDD",
+  "title": "몽고디비 인 액션",
+  "introduction": "빅 데이터 시대 최고의 NoSQL 데이터베이스!",
   "authors": [
-    "Kent"
+    "카일 뱅커",
+    "피터 배컴",
+    "숀 버크",
+    "덕 개릿",
+    "팀 호킨스"
   ],
-  "publishedYear": 2021
+  "publishedDate": "2021-05-02"
 }
 
 ###
-PATCH http://localhost:8080/books/60ed38c2e817435eb9fd5699
-Content-Type: application/json
-
-{
-  "title": "Webflux",
-  "authors": [
-    "Rupee"
-  ],
-  "publishedYear": 2021
-}
-
-###
-DELETE http://localhost:8080/books/60ed3cca8b089e41ff2f9951
+DELETE {{server}}/books/60ed38c2e817435eb9fd5699

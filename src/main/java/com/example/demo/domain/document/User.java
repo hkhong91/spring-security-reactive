@@ -1,22 +1,22 @@
 package com.example.demo.domain.document;
 
+import com.example.demo.domain.value.Gender;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
 
-@Document(collection = "Book")
+@Document(collection = "User")
 @Getter
 @Setter
 @Builder
-public class Book {
+public class User {
 
   @Id
   private final String id;
@@ -27,11 +27,13 @@ public class Book {
   @LastModifiedDate
   private final LocalDateTime updatedAt;
 
-  private String title;
+  @Indexed(unique = true)
+  private String email;
 
-  private String introduction;
+  @Indexed(unique = true)
+  private String name;
 
-  private Set<String> authors;
+  private String password;
 
-  private LocalDate publishedDate;
+  private Gender gender;
 }

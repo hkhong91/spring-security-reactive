@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      auto-index-creation: true
+logging:
+  level:
+    org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG
+jwt:
+  secret-key: d2m0k2y
+  expires: 24
