@@ -1,13 +1,12 @@
 package com.example.demo.application.response;
 
 import com.example.demo.domain.document.Book;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
-import lombok.Builder;
-import lombok.Getter;
-import org.bson.types.ObjectId;
 
 @Getter
 @Builder

@@ -1,10 +1,11 @@
 package com.example.demo.application.controller;
 
-import com.example.demo.application.security.SigninUser;
 import com.example.demo.application.request.BookHitRequest;
 import com.example.demo.application.request.BookRequest;
 import com.example.demo.application.response.BookHitResponse;
 import com.example.demo.application.response.BookResponse;
+import com.example.demo.application.security.JWTService;
+import com.example.demo.application.security.SigninUser;
 import com.example.demo.application.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +16,8 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class BookController {
 
+  private final JWTService jwtService;
   private final BookService bookService;
-  private final SigninUser signinUser;
 
   @GetMapping("/books/{bookId}")
   public Mono<BookResponse> getBook(@PathVariable String bookId) {
@@ -46,7 +47,9 @@ public class BookController {
 
   @PutMapping("/books/{bookId}/hits")
   public Mono<BookHitResponse> hitBook(@PathVariable String bookId,
+                                       @RequestHeader("Authorization") String authorization,
                                        @RequestBody BookHitRequest request) {
-    return bookService.hitBook(bookId, request, this.signinUser);
+    SigninUser signinUser = jwtService.verify(authorization);
+    return bookService.hitBook(bookId, request, signinUser);
   }
 }

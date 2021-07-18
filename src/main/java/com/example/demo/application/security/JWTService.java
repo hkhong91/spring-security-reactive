@@ -3,8 +3,10 @@ package com.example.demo.application.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.demo.domain.document.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class JWTService {
 
   @Value("${jwt.secret-key}")
@@ -27,20 +30,22 @@ public class JWTService {
     return JWT.create()
         .withIssuedAt(now)
         .withExpiresAt(Date.from(now.toInstant().plus(Duration.ofHours(this.expires))))
-        .withClaim(ClaimConstant.ID, user.getId())
-        .withClaim(ClaimConstant.NAME, user.getName())
+        .withClaim(JWTClaimKey.ID, user.getId())
+        .withClaim(JWTClaimKey.NAME, user.getName())
         .sign(this.getAlgorithm());
   }
 
-  public Map<String, Claim> verify(String token) {
-    return JWT.require(this.getAlgorithm())
+  public SigninUser verify(String authorization) {
+    String token = authorization.substring("Bearer ".length());
+    Map<String, Claim> claims = JWT.require(this.getAlgorithm())
         .build()
-        .verify(token)
+        .verify(this.decode(token))
         .getClaims();
+    return SigninUser.of(claims);
   }
 
-  public Map<String, Claim> decode(String token) {
-    return JWT.decode(token).getClaims();
+  private DecodedJWT decode(String token) {
+    return JWT.decode(token);
   }
 
   private Algorithm getAlgorithm() {

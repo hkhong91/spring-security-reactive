@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 @Document(collection = "BookHit")
 @CompoundIndexes({
-    @CompoundIndex(name = "book_user", def = "{'bookId': 1, 'userId':1}")
+    @CompoundIndex(name = "bookId_userId", def = "{'bookId': 1, 'userId':1}")
 })
 @Getter
 @Setter
