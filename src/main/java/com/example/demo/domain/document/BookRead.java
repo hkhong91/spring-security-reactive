@@ -13,14 +13,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "BookHit")
+@Document(collection = "BookRead")
 @CompoundIndexes({
     @CompoundIndex(name = "bookId_userId", def = "{'bookId': 1, 'userId':1}")
 })
 @Getter
 @Setter
 @Builder
-public class BookHit {
+public class BookRead {
 
   @Id
   private final String id;
@@ -36,4 +36,16 @@ public class BookHit {
   private final LocalDateTime updatedAt;
 
   private LikeOrHate likeOrHate;
+
+  public static BookRead of(String bookId, String userId) {
+    return of(bookId, userId, LikeOrHate.NONE);
+  }
+
+  public static BookRead of(String bookId, String userId, LikeOrHate likeOrHate) {
+    return BookRead.builder()
+        .bookId(bookId)
+        .userId(userId)
+        .likeOrHate(likeOrHate)
+        .build();
+  }
 }

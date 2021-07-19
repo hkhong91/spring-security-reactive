@@ -1,8 +1,9 @@
 package com.example.demo.application.controller;
 
-import com.example.demo.application.request.BookHitRequest;
+import com.example.demo.application.request.BookReadRequest;
 import com.example.demo.application.request.BookRequest;
-import com.example.demo.application.response.BookHitResponse;
+import com.example.demo.application.response.BookDetailResponse;
+import com.example.demo.application.response.BookReadResponse;
 import com.example.demo.application.response.BookResponse;
 import com.example.demo.application.security.JWTService;
 import com.example.demo.application.security.SigninUser;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 @RestController
 @RequiredArgsConstructor
 public class BookController {
@@ -20,8 +23,14 @@ public class BookController {
   private final BookService bookService;
 
   @GetMapping("/books/{bookId}")
-  public Mono<BookResponse> getBook(@PathVariable String bookId) {
-    return bookService.getBook(bookId);
+  public Mono<BookDetailResponse> getBook(@PathVariable String bookId,
+                                          @RequestHeader(value = "Authorization", required = false) String authorization) {
+    if (Objects.nonNull(authorization)) {
+      SigninUser signinUser = jwtService.verify(authorization);
+      return bookService.getBook(bookId, signinUser);
+    } else {
+      return bookService.getBook(bookId);
+    }
   }
 
   @GetMapping("/books")
@@ -45,11 +54,11 @@ public class BookController {
     return bookService.deleteBook(bookId);
   }
 
-  @PutMapping("/books/{bookId}/hits")
-  public Mono<BookHitResponse> hitBook(@PathVariable String bookId,
-                                       @RequestHeader("Authorization") String authorization,
-                                       @RequestBody BookHitRequest request) {
+  @PutMapping("/books/{bookId}/read")
+  public Mono<BookReadResponse> readBook(@PathVariable String bookId,
+                                        @RequestHeader(value = "Authorization") String authorization,
+                                        @RequestBody BookReadRequest request) {
     SigninUser signinUser = jwtService.verify(authorization);
-    return bookService.hitBook(bookId, request, signinUser);
+    return bookService.readBook(bookId, request, signinUser);
   }
 }

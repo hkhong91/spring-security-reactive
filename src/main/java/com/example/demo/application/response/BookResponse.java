@@ -1,15 +1,15 @@
 package com.example.demo.application.response;
 
 import com.example.demo.domain.document.Book;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
-@Builder
+@SuperBuilder
 public class BookResponse {
 
   private final String id;
