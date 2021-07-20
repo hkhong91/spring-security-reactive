@@ -6,5 +6,4 @@ import lombok.Getter;
 public enum LikeOrHate {
   LIKE,
   HATE,
-  NONE
 }

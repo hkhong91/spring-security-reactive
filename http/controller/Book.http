@@ -3,10 +3,14 @@ GET {{server}}/books/60f263bc840d0732de280d6d
 
 ### 책 조회
 GET {{server}}/books/60f263bc840d0732de280d6d
-Authorization: Bearer {{jwt}}
+Authorization: Bearer {{jwt1}}
 
 ### 책 리스트 조회
 GET {{server}}/books
+
+### 책 리스트 조회
+GET {{server}}/books
+Authorization: Bearer {{jwt2}}
 
 ### 책 등록
 POST {{server}}/books
@@ -22,7 +26,7 @@ Content-Type: application/json
 }
 
 ### 책 수정
-PATCH {{server}}/books/60f263bc840d0732de280d6d
+PATCH {{server}}/books/60f6bc9b577dbe181e3babfc
 Content-Type: application/json
 
 {
@@ -41,11 +45,12 @@ Content-Type: application/json
 ### 책 삭제
 DELETE {{server}}/books/60f263db840d0732de280d6e
 
-### 책 좋아요 혹은 싫어요
-PUT {{server}}/books/60f263bc840d0732de280d6d/read
+### 책 좋아요
+PUT {{server}}/books/60f6bc9b577dbe181e3babfc/like
+Authorization: Bearer {{jwt1}}
 Content-Type: application/json
-Authorization: Bearer {{jwt}}
 
-{
-  "likeOrHate": "LIKE"
-}
+### 책 싫어요
+PUT {{server}}/books/60f6bc9b577dbe181e3babfc/hate
+Authorization: Bearer {{jwt2}}
+Content-Type: application/json

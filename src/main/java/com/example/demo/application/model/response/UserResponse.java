@@ -1,4 +1,4 @@
-package com.example.demo.application.response;
+package com.example.demo.application.model.response;
 
 import com.example.demo.domain.document.User;
 import com.example.demo.domain.value.Gender;

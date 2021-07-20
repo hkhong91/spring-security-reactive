@@ -2,15 +2,9 @@ package com.example.demo.application.service;
 
 import com.example.demo.application.exception.CustomException;
 import com.example.demo.application.exception.CustomMessage;
-import com.example.demo.application.request.BookReadRequest;
-import com.example.demo.application.request.BookRequest;
-import com.example.demo.application.response.BookDetailResponse;
-import com.example.demo.application.response.BookReadResponse;
-import com.example.demo.application.response.BookResponse;
+import com.example.demo.application.model.request.BookRequest;
+import com.example.demo.application.model.response.BookResponse;
 import com.example.demo.application.security.SigninUser;
-import com.example.demo.domain.document.Book;
-import com.example.demo.domain.document.BookRead;
-import com.example.demo.domain.repository.BookReadRepository;
 import com.example.demo.domain.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,35 +12,36 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static reactor.function.TupleUtils.function;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class BookService {
 
   private final BookRepository bookRepository;
-  private final BookReadRepository bookReadRepository;
 
-  public Mono<BookDetailResponse> getBook(String bookId) {
+  public Mono<BookResponse> getBook(String bookId) {
     return bookRepository.findById(bookId)
         .switchIfEmpty(Mono.error(CustomException.of(CustomMessage.NOT_FOUND_BOOK)))
-        .map(BookDetailResponse::of);
+        .map(BookResponse::of);
   }
 
-  public Mono<BookDetailResponse> getBook(String bookId,
-                                          SigninUser signinUser) {
+  public Mono<BookResponse> getBook(String bookId,
+                                    SigninUser signinUser) {
     String userId = signinUser.getId();
-    Mono<Book> bookMono = bookRepository.findById(bookId)
-        .switchIfEmpty(Mono.error(CustomException.of(CustomMessage.NOT_FOUND_BOOK)));
-    Mono<BookRead> readMono = bookReadRepository.findByBookIdAndUserId(bookId, userId)
-        .defaultIfEmpty(BookRead.of(bookId, userId));
-    return Mono.zip(bookMono, readMono).map(function(BookDetailResponse::of));
+    return bookRepository.findById(bookId)
+        .switchIfEmpty(Mono.error(CustomException.of(CustomMessage.NOT_FOUND_BOOK)))
+        .map(book -> BookResponse.ofUser(book, userId));
   }
 
   public Flux<BookResponse> getBooks() {
     return bookRepository.findAll()
         .map(BookResponse::of);
+  }
+
+  public Flux<BookResponse> getBooks(SigninUser signinUser) {
+    String userId = signinUser.getId();
+    return bookRepository.findAll()
+        .map(book -> BookResponse.ofUser(book, userId));
   }
 
   public Mono<BookResponse> createBook(BookRequest request) {
@@ -71,16 +66,27 @@ public class BookService {
     return bookRepository.deleteById(bookId);
   }
 
-  public Mono<BookReadResponse> readBook(String bookId,
-                                        BookReadRequest request,
-                                        SigninUser signinUser) {
+  public Mono<BookResponse> likeBook(String bookId,
+                                     SigninUser signinUser) {
     String userId = signinUser.getId();
-    return bookReadRepository.findByBookIdAndUserId(bookId, userId)
-        .flatMap(read -> {
-          read.setLikeOrHate(request.getLikeOrHate());
-          return bookReadRepository.save(read);
+    return bookRepository.findById(bookId)
+        .switchIfEmpty(Mono.error(CustomException.of(CustomMessage.NOT_FOUND_BOOK)))
+        .flatMap(book -> {
+          book.like(userId);
+          return bookRepository.save(book);
         })
-        .switchIfEmpty(bookReadRepository.save(request.toRead(bookId, userId)))
-        .map(BookReadResponse::of);
+        .map(book -> BookResponse.ofUser(book, userId));
+  }
+
+  public Mono<BookResponse> hateBook(String bookId,
+                                     SigninUser signinUser) {
+    String userId = signinUser.getId();
+    return bookRepository.findById(bookId)
+        .switchIfEmpty(Mono.error(CustomException.of(CustomMessage.NOT_FOUND_BOOK)))
+        .flatMap(book -> {
+          book.hate(userId);
+          return bookRepository.save(book);
+        })
+        .map(book -> BookResponse.ofUser(book, userId));
   }
 }

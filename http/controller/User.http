@@ -3,7 +3,7 @@ POST {{server}}/users/signin
 Content-Type: application/json
 
 {
-  "email": "hkhong91@gmail.com",
+  "email": "cjdeks@hanmail.net",
   "password": "1234"
 }
 
@@ -12,8 +12,8 @@ POST {{server}}/users/signup
 Content-Type: application/json
 
 {
-  "email": "hkhong91@gmail.com",
-  "name": "홍아지",
+  "email": "cjdeks@hanmail.net",
+  "name": "청단",
   "gender": "M",
   "password": "1234"
 }

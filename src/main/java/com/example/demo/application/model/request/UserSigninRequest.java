@@ -1,4 +1,4 @@
-package com.example.demo.application.request;
+package com.example.demo.application.model.request;
 
 import lombok.Getter;
 

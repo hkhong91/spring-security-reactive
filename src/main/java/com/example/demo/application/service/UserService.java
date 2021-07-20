@@ -1,9 +1,11 @@
 package com.example.demo.application.service;
 
-import com.example.demo.application.request.UserSigninRequest;
-import com.example.demo.application.request.UserSignupRequest;
-import com.example.demo.application.response.UserResponse;
-import com.example.demo.application.response.UserSigninResponse;
+import com.example.demo.application.exception.CustomException;
+import com.example.demo.application.exception.CustomMessage;
+import com.example.demo.application.model.request.UserSigninRequest;
+import com.example.demo.application.model.request.UserSignupRequest;
+import com.example.demo.application.model.response.UserResponse;
+import com.example.demo.application.model.response.UserSigninResponse;
 import com.example.demo.application.security.JWTService;
 import com.example.demo.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +25,13 @@ public class UserService {
 
   public Mono<UserSigninResponse> signin(UserSigninRequest request) {
     return userRepository.findByEmail(request.getEmail())
-        .flatMap(user -> Mono.just(jwtService.sign(user)))
+        .switchIfEmpty(Mono.error(CustomException.of(CustomMessage.WRONG_USER)))
+        .flatMap(user -> {
+          if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            return Mono.error(CustomException.of(CustomMessage.WRONG_USER));
+          }
+          return Mono.just(jwtService.sign(user));
+        })
         .map(UserSigninResponse::of);
   }
 

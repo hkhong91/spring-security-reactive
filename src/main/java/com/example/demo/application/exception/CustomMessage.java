@@ -12,6 +12,8 @@ public enum CustomMessage {
   AUTHORIZATION_ERROR(HttpStatus.UNAUTHORIZED, "Sign in failed"),
   BAD_REQUEST(HttpStatus.BAD_REQUEST, "Bad request"),
   NOT_FOUND_BOOK(HttpStatus.NOT_FOUND, "Not found book."),
+  SAME_VALUE(HttpStatus.CONFLICT, "Same value."),
+  WRONG_USER(HttpStatus.UNAUTHORIZED, "Wrong user."),
   ;
 
   private final HttpStatus status;

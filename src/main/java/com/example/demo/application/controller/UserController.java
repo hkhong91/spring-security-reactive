@@ -1,9 +1,9 @@
 package com.example.demo.application.controller;
 
-import com.example.demo.application.request.UserSigninRequest;
-import com.example.demo.application.request.UserSignupRequest;
-import com.example.demo.application.response.UserResponse;
-import com.example.demo.application.response.UserSigninResponse;
+import com.example.demo.application.model.request.UserSigninRequest;
+import com.example.demo.application.model.request.UserSignupRequest;
+import com.example.demo.application.model.response.UserResponse;
+import com.example.demo.application.model.response.UserSigninResponse;
 import com.example.demo.application.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

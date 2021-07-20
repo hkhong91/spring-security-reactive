@@ -1,9 +1,10 @@
-package com.example.demo.application.request;
+package com.example.demo.application.model.request;
 
 import com.example.demo.domain.document.Book;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Set;
 
 @Getter
@@ -18,6 +19,7 @@ public class BookRequest {
         .title(this.title)
         .authors(this.authors)
         .publishedDate(this.publishedDate)
+        .likeOrHates(Collections.emptyMap())
         .build();
   }
 }

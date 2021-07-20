@@ -1,10 +1,7 @@
 package com.example.demo.application.controller;
 
-import com.example.demo.application.request.BookReadRequest;
-import com.example.demo.application.request.BookRequest;
-import com.example.demo.application.response.BookDetailResponse;
-import com.example.demo.application.response.BookReadResponse;
-import com.example.demo.application.response.BookResponse;
+import com.example.demo.application.model.request.BookRequest;
+import com.example.demo.application.model.response.BookResponse;
 import com.example.demo.application.security.JWTService;
 import com.example.demo.application.security.SigninUser;
 import com.example.demo.application.service.BookService;
@@ -23,8 +20,8 @@ public class BookController {
   private final BookService bookService;
 
   @GetMapping("/books/{bookId}")
-  public Mono<BookDetailResponse> getBook(@PathVariable String bookId,
-                                          @RequestHeader(value = "Authorization", required = false) String authorization) {
+  public Mono<BookResponse> getBook(@PathVariable String bookId,
+                                    @RequestHeader(value = "Authorization", required = false) String authorization) {
     if (Objects.nonNull(authorization)) {
       SigninUser signinUser = jwtService.verify(authorization);
       return bookService.getBook(bookId, signinUser);
@@ -34,8 +31,13 @@ public class BookController {
   }
 
   @GetMapping("/books")
-  public Flux<BookResponse> getBooks() {
-    return bookService.getBooks();
+  public Flux<BookResponse> getBooks(@RequestHeader(value = "Authorization", required = false) String authorization) {
+    if (Objects.nonNull(authorization)) {
+      SigninUser signinUser = jwtService.verify(authorization);
+      return bookService.getBooks(signinUser);
+    } else {
+      return bookService.getBooks();
+    }
   }
 
   @PostMapping("/books")
@@ -54,11 +56,17 @@ public class BookController {
     return bookService.deleteBook(bookId);
   }
 
-  @PutMapping("/books/{bookId}/read")
-  public Mono<BookReadResponse> readBook(@PathVariable String bookId,
-                                        @RequestHeader(value = "Authorization") String authorization,
-                                        @RequestBody BookReadRequest request) {
+  @PutMapping("/books/{bookId}/like")
+  public Mono<BookResponse> likeBook(@PathVariable String bookId,
+                                     @RequestHeader(value = "Authorization") String authorization) {
     SigninUser signinUser = jwtService.verify(authorization);
-    return bookService.readBook(bookId, request, signinUser);
+    return bookService.likeBook(bookId, signinUser);
+  }
+
+  @PutMapping("/books/{bookId}/hate")
+  public Mono<BookResponse> hateBook(@PathVariable String bookId,
+                                     @RequestHeader(value = "Authorization") String authorization) {
+    SigninUser signinUser = jwtService.verify(authorization);
+    return bookService.hateBook(bookId, signinUser);
   }
 }
