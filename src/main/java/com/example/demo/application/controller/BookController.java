@@ -1,10 +1,13 @@
 package com.example.demo.application.controller;
 
+import com.example.demo.application.model.request.BookLikeOrHateRequest;
 import com.example.demo.application.model.request.BookRequest;
 import com.example.demo.application.model.response.BookResponse;
 import com.example.demo.application.security.JWTService;
 import com.example.demo.application.security.SigninUser;
 import com.example.demo.application.service.BookService;
+import com.example.demo.domain.value.LikeOrHate;
+import com.mongodb.client.result.UpdateResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -56,17 +59,11 @@ public class BookController {
     return bookService.deleteBook(bookId);
   }
 
-  @PutMapping("/books/{bookId}/like")
-  public Mono<BookResponse> likeBook(@PathVariable String bookId,
-                                     @RequestHeader(value = "Authorization") String authorization) {
+  @PutMapping("/books/{bookId}/like-or-hate")
+  public Mono<BookResponse> likeOrHateBook(@PathVariable String bookId,
+                                     @RequestHeader(value = "Authorization") String authorization,
+                                     @RequestBody BookLikeOrHateRequest request) {
     SigninUser signinUser = jwtService.verify(authorization);
-    return bookService.likeBook(bookId, signinUser);
-  }
-
-  @PutMapping("/books/{bookId}/hate")
-  public Mono<BookResponse> hateBook(@PathVariable String bookId,
-                                     @RequestHeader(value = "Authorization") String authorization) {
-    SigninUser signinUser = jwtService.verify(authorization);
-    return bookService.hateBook(bookId, signinUser);
+    return bookService.likeOrHateBook(bookId, request, signinUser);
   }
 }

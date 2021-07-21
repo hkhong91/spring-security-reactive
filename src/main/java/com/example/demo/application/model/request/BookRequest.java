@@ -19,7 +19,6 @@ public class BookRequest {
         .title(this.title)
         .authors(this.authors)
         .publishedDate(this.publishedDate)
-        .likeOrHates(Collections.emptyMap())
         .build();
   }
 }

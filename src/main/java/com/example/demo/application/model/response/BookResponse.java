@@ -1,13 +1,13 @@
 package com.example.demo.application.model.response;
 
 import com.example.demo.domain.document.Book;
+import com.example.demo.domain.document.BookRead;
 import com.example.demo.domain.value.LikeOrHate;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,13 +21,9 @@ public class BookResponse {
   private final LocalDate publishedDate;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
-  private final LikeOrHate likeOrHate;
   private final int likeCount;
   private final int hateCount;
-
-  public static BookResponse of(Book book) {
-    return of(book, null);
-  }
+  private final LikeOrHate likeOrHate;
 
   public static BookResponse of(Book book, LikeOrHate likeOrHate) {
     return BookResponse.builder()
@@ -43,10 +39,13 @@ public class BookResponse {
         .build();
   }
 
-  public static BookResponse ofUser(Book book, String userId) {
-    Map<String, LikeOrHate> likeOrHates = book.getLikeOrHates();
-    if (Objects.nonNull(likeOrHates)) {
-      return of(book, likeOrHates.get(userId));
+  public static BookResponse of(Book book) {
+    return of(book, LikeOrHate.NONE);
+  }
+
+  public static BookResponse of(Book book, BookRead read) {
+    if (Objects.nonNull(read)) {
+      return of(book, read.getLikeOrHate());
     } else {
       return of(book);
     }

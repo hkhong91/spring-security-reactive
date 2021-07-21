@@ -1,7 +1,7 @@
 package com.example.demo.application.service;
 
-import com.example.demo.application.exception.CustomException;
-import com.example.demo.application.exception.CustomMessage;
+import com.example.demo.application.exception.ServiceException;
+import com.example.demo.application.exception.ServiceMessage;
 import com.example.demo.application.model.request.UserSigninRequest;
 import com.example.demo.application.model.request.UserSignupRequest;
 import com.example.demo.application.model.response.UserResponse;
@@ -25,10 +25,10 @@ public class UserService {
 
   public Mono<UserSigninResponse> signin(UserSigninRequest request) {
     return userRepository.findByEmail(request.getEmail())
-        .switchIfEmpty(Mono.error(CustomException.of(CustomMessage.WRONG_USER)))
+        .switchIfEmpty(Mono.error(ServiceException.of(ServiceMessage.WRONG_USER)))
         .flatMap(user -> {
           if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return Mono.error(CustomException.of(CustomMessage.WRONG_USER));
+            return Mono.error(ServiceException.of(ServiceMessage.WRONG_USER));
           }
           return Mono.just(jwtService.sign(user));
         })

@@ -1,5 +1,6 @@
 package com.example.demo.application.exception;
 
+import com.example.demo.domain.exception.DomainMessage;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +13,19 @@ public class ErrorResponse {
   private final String name;
   private final String message;
 
-  public static Mono<ResponseEntity<ErrorResponse>> entity(CustomMessage customMessage) {
-    return Mono.just(ResponseEntity.status(customMessage.getStatus())
+  public static Mono<ResponseEntity<ErrorResponse>> entity(ServiceMessage serviceMessage) {
+    return Mono.just(ResponseEntity.status(serviceMessage.getStatus())
         .body(ErrorResponse.builder()
-            .name(customMessage.name())
-            .message(customMessage.getMessage())
+            .name(serviceMessage.name())
+            .message(serviceMessage.getMessage())
+            .build()));
+  }
+
+  public static Mono<ResponseEntity<ErrorResponse>> entity(DomainMessage domainMessage) {
+    return Mono.just(ResponseEntity.status(domainMessage.getStatus())
+        .body(ErrorResponse.builder()
+            .name(domainMessage.name())
+            .message(domainMessage.getMessage())
             .build()));
   }
 }
