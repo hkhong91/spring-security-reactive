@@ -1,6 +1,5 @@
 package com.example.demo.application.exception;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.demo.domain.exception.DomainException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -30,16 +29,6 @@ public class ErrorHandler {
         .body(ErrorResponse.builder()
             .name(serviceMessage.name())
             .message(exception.getReason())
-            .build()));
-  }
-
-  @ExceptionHandler(JWTVerificationException.class)
-  public Mono<ResponseEntity<ErrorResponse>> handler(JWTVerificationException exception) {
-    ServiceMessage serviceMessage = ServiceMessage.AUTHORIZATION_ERROR;
-    return Mono.just(ResponseEntity.status(serviceMessage.getStatus())
-        .body(ErrorResponse.builder()
-            .name(serviceMessage.name())
-            .message(exception.getMessage())
             .build()));
   }
 

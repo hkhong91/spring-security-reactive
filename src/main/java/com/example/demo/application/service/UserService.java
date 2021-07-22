@@ -6,7 +6,7 @@ import com.example.demo.application.model.request.UserSigninRequest;
 import com.example.demo.application.model.request.UserSignupRequest;
 import com.example.demo.application.model.response.UserResponse;
 import com.example.demo.application.model.response.UserSigninResponse;
-import com.example.demo.application.security.JWTService;
+import com.example.demo.application.security.JwtProvider;
 import com.example.demo.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,17 +20,17 @@ import reactor.core.publisher.Mono;
 public class UserService {
 
   private final UserRepository userRepository;
-  private final JWTService jwtService;
+  private final JwtProvider jwtProvider;
   private final PasswordEncoder passwordEncoder;
 
   public Mono<UserSigninResponse> signin(UserSigninRequest request) {
     return userRepository.findByEmail(request.getEmail())
-        .switchIfEmpty(Mono.error(ServiceException.of(ServiceMessage.WRONG_USER)))
+        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.WRONG_USER)))
         .flatMap(user -> {
           if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return Mono.error(ServiceException.of(ServiceMessage.WRONG_USER));
+            return Mono.error(new ServiceException(ServiceMessage.WRONG_USER));
           }
-          return Mono.just(jwtService.sign(user));
+          return Mono.just(jwtProvider.generate(user));
         })
         .map(UserSigninResponse::of);
   }

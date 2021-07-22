@@ -1,5 +1,5 @@
 ### 로그인
-POST {{server}}/users/signin
+POST {{server}}/auth/signin
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### 가입
-POST {{server}}/users/signup
+POST {{server}}/auth/signup
 Content-Type: application/json
 
 {

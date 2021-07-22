@@ -13,16 +13,16 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+public class AuthController {
 
   private final UserService userService;
 
-  @PostMapping("/users/signin")
+  @PostMapping("/auth/signin")
   public Mono<UserSigninResponse> signin(@RequestBody UserSigninRequest request) {
     return userService.signin(request);
   }
 
-  @PostMapping("/users/signup")
+  @PostMapping("/auth/signup")
   public Mono<UserResponse> signup(@RequestBody UserSignupRequest request) {
     return userService.signup(request);
   }

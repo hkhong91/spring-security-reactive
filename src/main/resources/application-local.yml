@@ -4,7 +4,8 @@ spring:
       auto-index-creation: true
 logging:
   level:
+    com.example.demo: DEBUG
     org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG
 jwt:
-  secret-key: d2m0k2y
+  secret-key: BAIGQN15FJFA9FQNNZOQ7IFJOJ9385FQMBOPQZMVNJKD5350JAFFWPQN
   expires: 24

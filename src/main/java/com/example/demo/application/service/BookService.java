@@ -5,7 +5,7 @@ import com.example.demo.application.exception.ServiceMessage;
 import com.example.demo.application.model.request.BookLikeOrHateRequest;
 import com.example.demo.application.model.request.BookRequest;
 import com.example.demo.application.model.response.BookResponse;
-import com.example.demo.application.security.SigninUser;
+import com.example.demo.application.security.AuthUser;
 import com.example.demo.domain.document.Book;
 import com.example.demo.domain.document.BookRead;
 import com.example.demo.domain.repository.BookReadRepository;
@@ -30,15 +30,15 @@ public class BookService {
 
   public Mono<BookResponse> getBook(String bookId) {
     return bookRepository.findById(bookId)
-        .switchIfEmpty(Mono.error(ServiceException.of(ServiceMessage.NOT_FOUND_BOOK)))
+        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
         .map(BookResponse::of);
   }
 
   public Mono<BookResponse> getBook(String bookId,
-                                    SigninUser signinUser) {
-    String userId = signinUser.getId();
+                                    AuthUser authUser) {
+    String userId = authUser.getId();
     return bookRepository.findById(bookId)
-        .switchIfEmpty(Mono.error(ServiceException.of(ServiceMessage.NOT_FOUND_BOOK)))
+        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
         .zipWith(bookReadRepository.findByBookIdAndUserId(bookId, userId))
         .map(TupleUtils.function(BookResponse::of));
   }
@@ -49,8 +49,8 @@ public class BookService {
         .map(BookResponse::of);
   }
 
-  public Flux<BookResponse> getBooks(SigninUser signinUser) {
-    String userId = signinUser.getId();
+  public Flux<BookResponse> getBooks(AuthUser authUser) {
+    String userId = authUser.getId();
     return bookRepository.findAll()
         .switchIfEmpty(Flux.empty())
         .collectMap(Book::getId, book -> book)
@@ -69,7 +69,7 @@ public class BookService {
   public Mono<BookResponse> updateBook(String bookId,
                                        BookRequest request) {
     return bookRepository.findById(bookId)
-        .switchIfEmpty(Mono.error(ServiceException.of(ServiceMessage.NOT_FOUND_BOOK)))
+        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
         .flatMap(book -> {
           book.setTitle(request.getTitle());
           book.setAuthors(request.getAuthors());
@@ -85,8 +85,8 @@ public class BookService {
 
   public Mono<BookResponse> likeOrHateBook(String bookId,
                                            BookLikeOrHateRequest request,
-                                           SigninUser signinUser) {
-    String userId = signinUser.getId();
+                                           AuthUser authUser) {
+    String userId = authUser.getId();
     LikeOrHate likeOrHate = request.getLikeOrHate();
     return bookLikeOrHateDomainService.modifyBookRead(bookId, userId, likeOrHate)
         .flatMap(read -> bookLikeOrHateDomainService.likeOrHateBook(bookId, read.getLikeOrHate(), likeOrHate)

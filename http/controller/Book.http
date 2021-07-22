@@ -2,15 +2,15 @@
 GET {{server}}/books/60f6fd94a984e31ac6ce2cb6
 
 ### 책 조회
-GET {{server}}/books/60f6fd94a984e31ac6ce2cb6
+GET {{server}}/books/60f6fd94a984e31ac6ce2cb6/read
 Authorization: Bearer {{jwt1}}
 
 ### 책 리스트 조회
 GET {{server}}/books
 
 ### 책 리스트 조회
-GET {{server}}/books
-Authorization: Bearer {{jwt1}}
+GET {{server}}/books/read
+Authorization: Bearer {{jwt2}}
 
 ### 책 등록
 POST {{server}}/books

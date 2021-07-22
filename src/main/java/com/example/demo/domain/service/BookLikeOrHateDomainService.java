@@ -35,7 +35,7 @@ public class BookLikeOrHateDomainService {
       case LIKE:
         switch (request) {
           case LIKE:
-            return Mono.error(DomainException.of(DomainMessage.SAME_VALUE));
+            return Mono.error(new DomainException(DomainMessage.SAME_VALUE));
           case HATE:
             update.inc("likeCount", -1).inc("hateCount", 1);
             break;
@@ -50,7 +50,7 @@ public class BookLikeOrHateDomainService {
             update.inc("likeCount", 1).inc("hateCount", -1);
             break;
           case HATE:
-            return Mono.error(DomainException.of(DomainMessage.SAME_VALUE));
+            return Mono.error(new DomainException(DomainMessage.SAME_VALUE));
           case NONE:
             update.inc("hateCount", -1);
             break;
@@ -65,7 +65,7 @@ public class BookLikeOrHateDomainService {
             update.inc("hateCount", 1);
             break;
           case NONE:
-            return Mono.error(DomainException.of(DomainMessage.SAME_VALUE));
+            return Mono.error(new DomainException(DomainMessage.SAME_VALUE));
         }
         break;
     }

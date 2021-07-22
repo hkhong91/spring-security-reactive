@@ -1,5 +1,6 @@
 package com.example.demo.application.model.response;
 
+import com.example.demo.application.security.JwtModel;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,9 +10,9 @@ public class UserSigninResponse {
 
   private final String token;
 
-  public static UserSigninResponse of(String token) {
+  public static UserSigninResponse of(JwtModel jwtModel) {
     return UserSigninResponse.builder()
-        .token(token)
+        .token(jwtModel.getAccessToken())
         .build();
   }
 }
