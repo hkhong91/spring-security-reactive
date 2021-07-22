@@ -58,8 +58,8 @@ public class BookController {
 
   @PutMapping("/books/{bookId}/like-or-hate")
   public Mono<BookResponse> likeOrHateBook(@PathVariable String bookId,
-                                           @AuthenticationPrincipal AuthUser authUser,
-                                           @RequestBody BookLikeOrHateRequest request) {
+                                           @RequestBody BookLikeOrHateRequest request,
+                                           @AuthenticationPrincipal AuthUser authUser) {
     return bookService.likeOrHateBook(bookId, request, authUser);
   }
 }

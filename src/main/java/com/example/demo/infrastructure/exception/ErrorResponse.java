@@ -19,4 +19,12 @@ public class ErrorResponse {
             .message(serviceMessage.getMessage())
             .build()));
   }
+
+  public static Mono<ResponseEntity<ErrorResponse>> entity(DomainMessage domainMessage) {
+    return Mono.just(ResponseEntity.status(domainMessage.getStatus())
+        .body(ErrorResponse.builder()
+            .name(domainMessage.name())
+            .message(domainMessage.getMessage())
+            .build()));
+  }
 }

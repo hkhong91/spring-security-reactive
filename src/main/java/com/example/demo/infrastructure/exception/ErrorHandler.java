@@ -16,6 +16,12 @@ public class ErrorHandler {
     return ErrorResponse.entity(exception.getServiceMessage());
   }
 
+  @ExceptionHandler(DomainException.class)
+  public Mono<ResponseEntity<ErrorResponse>> handler(DomainException exception) {
+    log.warn("Domain Exception! {}", exception.getDomainMessage());
+    return ErrorResponse.entity(exception.getDomainMessage());
+  }
+
   @ExceptionHandler(ServerWebInputException.class)
   public Mono<ResponseEntity<ErrorResponse>> handler(ServerWebInputException exception) {
     ServiceMessage serviceMessage = ServiceMessage.BAD_REQUEST;

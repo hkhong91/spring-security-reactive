@@ -3,14 +3,14 @@ GET {{server}}/books/60f7f3b01540627601cd1bc8
 
 ### 책 조회
 GET {{server}}/books/60f7f3b01540627601cd1bc8/read
-Authorization: Bearer {{jwt1}}
+Authorization: {{jwt1}}
 
 ### 책 리스트 조회
 GET {{server}}/books
 
 ### 책 리스트 조회
 GET {{server}}/books/read
-Authorization: Bearer {{jwt2}}
+Authorization: {{jwt2}}
 
 ### 책 등록
 POST {{server}}/books
@@ -46,8 +46,8 @@ Content-Type: application/json
 DELETE {{server}}/books/60f7f3b01540627601cd1bc8
 
 ### 책 좋아요/싫어요
-PUT {{server}}/books/60f94272cbf48603a3a6439d/like-or-hate
-Authorization: Bearer {{jwt2}}
+PUT {{server}}/books/60f94274cbf48603a3a6439e/like-or-hate
+Authorization: {{jwt2}}
 Content-Type: application/json
 
 {

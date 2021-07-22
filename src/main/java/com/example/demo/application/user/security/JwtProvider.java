@@ -41,7 +41,7 @@ public class JwtProvider {
       return null;
     }
     if (!authorization.startsWith(PREFIX)) {
-      throw new ServiceException(ServiceMessage.AUTHORIZATION_ERROR);
+      throw new ServiceException(ServiceMessage.UNAUTHORIZED);
     }
     return authorization.substring(PREFIX.length());
   }

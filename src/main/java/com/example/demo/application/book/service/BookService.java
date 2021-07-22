@@ -8,7 +8,7 @@ import com.example.demo.domain.book.document.Book;
 import com.example.demo.domain.book.document.BookRead;
 import com.example.demo.domain.book.repository.BookReadRepository;
 import com.example.demo.domain.book.repository.BookRepository;
-import com.example.demo.domain.book.service.BookLikeOrHateDomainService;
+import com.example.demo.domain.book.service.BookDomainService;
 import com.example.demo.domain.book.value.LikeOrHate;
 import com.example.demo.infrastructure.exception.ServiceException;
 import com.example.demo.infrastructure.exception.ServiceMessage;
@@ -27,7 +27,7 @@ public class BookService {
 
   private final BookRepository bookRepository;
   private final BookReadRepository bookReadRepository;
-  private final BookLikeOrHateDomainService bookLikeOrHateDomainService;
+  private final BookDomainService bookDomainService;
 
   public Mono<BookResponse> getBook(String bookId) {
     return bookRepository.findById(bookId)
@@ -90,8 +90,8 @@ public class BookService {
                                            AuthUser authUser) {
     String userId = authUser.getId();
     LikeOrHate likeOrHate = request.getLikeOrHate();
-    return bookLikeOrHateDomainService.modifyBookRead(bookId, userId, likeOrHate)
-        .flatMap(read -> bookLikeOrHateDomainService.likeOrHateBook(bookId, read.getLikeOrHate(), likeOrHate)
+    return bookDomainService.modifyLikeOrHate(bookId, userId, likeOrHate)
+        .flatMap(read -> bookDomainService.increaseLikeOrHateCount(bookId, read.getLikeOrHate(), likeOrHate)
             .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
             .map(book -> BookResponse.of(book, likeOrHate)));
   }

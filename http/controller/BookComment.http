@@ -1,0 +1,24 @@
+### 댓글 조회
+GET {{server}}/books/60f94272cbf48603a3a6439d/comments
+
+### 댓글 작성
+POST {{server}}/books/60f94272cbf48603a3a6439d/comments
+Authorization: {{jwt1}}
+Content-Type: application/json
+
+{
+  "content": "내용"
+}
+
+### 댓글 수정
+PATCH {{server}}/books/60f94272cbf48603a3a6439d/comments/60f96316d5cc1a69705422c2
+Authorization: {{jwt1}}
+Content-Type: application/json
+
+{
+  "content": "내용4"
+}
+
+### 댓글 삭제
+DELETE {{server}}/books/60f94272cbf48603a3a6439d/comments/60f9709211d86f6402504175
+Authorization: {{jwt2}}
