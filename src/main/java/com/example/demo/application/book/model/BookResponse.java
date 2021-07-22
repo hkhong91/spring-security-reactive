@@ -23,6 +23,7 @@ public class BookResponse {
   private final LocalDateTime updatedAt;
   private final int likeCount;
   private final int hateCount;
+  private final int reviewCount;
   private final LikeOrHate likeOrHate;
 
   public static BookResponse of(Book book, LikeOrHate likeOrHate) {
@@ -35,6 +36,7 @@ public class BookResponse {
         .updatedAt(book.getUpdatedAt())
         .likeCount(book.getLikeCount())
         .hateCount(book.getHateCount())
+        .reviewCount(book.getReviewCount())
         .likeOrHate(likeOrHate)
         .build();
   }

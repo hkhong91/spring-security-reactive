@@ -12,7 +12,7 @@ public enum ServiceMessage {
   UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Unauthorized."),
   BAD_REQUEST(HttpStatus.BAD_REQUEST, "Bad request"),
   NOT_FOUND_BOOK(HttpStatus.NOT_FOUND, "Not found book."),
-  NOT_FOUND_BOOK_COMMENT(HttpStatus.NOT_FOUND, "Not found book comment."),
+  NOT_FOUND_BOOK_REVIEW(HttpStatus.NOT_FOUND, "Not found book review."),
   WRONG_USER(HttpStatus.UNAUTHORIZED, "Wrong user."),
   ;
 

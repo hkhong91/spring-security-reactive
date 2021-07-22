@@ -38,4 +38,6 @@ public class Book {
   private int likeCount;
 
   private int hateCount;
+
+  private int reviewCount;
 }

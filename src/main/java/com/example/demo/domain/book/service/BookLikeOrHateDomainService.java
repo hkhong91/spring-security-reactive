@@ -14,11 +14,11 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class BookDomainService {
+public class BookLikeOrHateDomainService {
 
   private final ReactiveMongoTemplate mongoTemplate;
 
-  public Mono<BookRead> modifyLikeOrHate(String bookId, String userId, LikeOrHate likeOrHate) {
+  public Mono<BookRead> likeOrHate(String bookId, String userId, LikeOrHate likeOrHate) {
     Query query = Query.query(Criteria.where("bookId").is(bookId))
         .addCriteria(Criteria.where("userId").is(userId));
     Update update = new Update().set("likeOrHate", likeOrHate);
@@ -27,9 +27,9 @@ public class BookDomainService {
         .defaultIfEmpty(BookRead.of(bookId, userId));
   }
 
-  public Mono<Book> increaseLikeOrHateCount(String bookId, LikeOrHate current, LikeOrHate request) {
-    Update update = current.getIncrementUpdate(request);
+  public Mono<Book> increaseCount(String bookId, LikeOrHate current, LikeOrHate request) {
     Query query = Query.query(Criteria.where("id").is(bookId));
+    Update update = current.getIncrementUpdate(request);
     FindAndModifyOptions options = FindAndModifyOptions.options().returnNew(true);
     return mongoTemplate.findAndModify(query, update, options, Book.class);
   }

@@ -1,6 +1,6 @@
 package com.example.demo.application.book.model;
 
-import com.example.demo.domain.book.document.BookComment;
+import com.example.demo.domain.book.document.BookReview;
 import com.example.demo.domain.book.document.sub.Author;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class BookCommentResponse {
+public class BookReviewResponse {
 
   private final String id;
   private final String bookId;
@@ -18,14 +18,14 @@ public class BookCommentResponse {
   private final LocalDateTime updatedAt;
   private final String content;
 
-  public static BookCommentResponse of(BookComment comment) {
-    return BookCommentResponse.builder()
-        .id(comment.getId())
-        .bookId(comment.getBookId())
-        .author(comment.getAuthor())
-        .createdAt(comment.getCreatedAt())
-        .updatedAt(comment.getUpdatedAt())
-        .content(comment.getContent())
+  public static BookReviewResponse of(BookReview review) {
+    return BookReviewResponse.builder()
+        .id(review.getId())
+        .bookId(review.getBookId())
+        .author(review.getAuthor())
+        .createdAt(review.getCreatedAt())
+        .updatedAt(review.getUpdatedAt())
+        .content(review.getContent())
         .build();
   }
 }

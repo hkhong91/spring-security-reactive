@@ -1,15 +1,15 @@
 package com.example.demo.application.book.model;
 
-import com.example.demo.domain.book.document.BookComment;
+import com.example.demo.domain.book.document.BookReview;
 import lombok.Getter;
 
 @Getter
-public class BookCommentRequest {
+public class BookReviewRequest {
 
   private String content;
 
-  public BookComment toComment(String bookId) {
-    return BookComment.builder()
+  public BookReview toReview(String bookId) {
+    return BookReview.builder()
         .bookId(bookId)
         .content(this.content)
         .build();

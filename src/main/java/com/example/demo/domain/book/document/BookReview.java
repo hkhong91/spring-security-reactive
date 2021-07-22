@@ -15,11 +15,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "BookComment")
+@Document(collection = "BookReview")
 @Getter
 @Setter
 @Builder
-public class BookComment {
+public class BookReview {
 
   @Id
   private final String id;
@@ -39,12 +39,14 @@ public class BookComment {
 
   private String content;
 
-  public void verify(String bookId, String userId) {
-    if (this.author.getId().equals(userId)) {
-      throw new DomainException(DomainMessage.FORBIDDEN);
-    }
-    if (this.bookId.equals(bookId)) {
+  public void verify(String bookId) {
+    if (!this.bookId.equals(bookId)) {
       throw new DomainException(DomainMessage.STRANGE_DATA);
     }
+  }
+
+  public void verify(String bookId, String userId) {
+    this.verify(bookId);
+    this.author.verify(userId);
   }
 }
