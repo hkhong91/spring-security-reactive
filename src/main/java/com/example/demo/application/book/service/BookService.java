@@ -15,7 +15,6 @@ import com.example.demo.infrastructure.exception.ServiceMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.function.TupleUtils;
@@ -81,10 +80,11 @@ public class BookService {
   }
 
   public Mono<Void> deleteBook(String bookId) {
-    return bookRepository.deleteById(bookId);
+    return bookRepository.findById(bookId)
+        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
+        .flatMap(bookRepository::delete);
   }
 
-  @Transactional
   public Mono<BookResponse> likeOrHateBook(String bookId,
                                            BookLikeOrHateRequest request,
                                            AuthUser authUser) {

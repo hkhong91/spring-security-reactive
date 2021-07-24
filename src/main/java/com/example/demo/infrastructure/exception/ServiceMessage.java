@@ -10,12 +10,14 @@ public enum ServiceMessage {
 
   SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error."),
   UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Unauthorized."),
-  BAD_REQUEST(HttpStatus.BAD_REQUEST, "Bad request"),
+  INPUT_ERROR(HttpStatus.BAD_REQUEST, "Input error."),
+  VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "Fail validation"),
   NOT_FOUND_BOOK(HttpStatus.NOT_FOUND, "Not found book."),
   NOT_FOUND_BOOK_REVIEW(HttpStatus.NOT_FOUND, "Not found book review."),
   WRONG_USER(HttpStatus.UNAUTHORIZED, "Wrong user."),
+  EXISTS_USER(HttpStatus.CONFLICT, "Exists user."),
   ;
 
   private final HttpStatus status;
-  private final String message;
+  private final String defaultMessage;
 }

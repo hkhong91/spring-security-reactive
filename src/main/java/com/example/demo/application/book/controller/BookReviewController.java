@@ -5,15 +5,15 @@ import com.example.demo.application.book.model.BookReviewResponse;
 import com.example.demo.application.book.service.BookReviewService;
 import com.example.demo.application.user.security.AuthUser;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
+@Validated
 @RequiredArgsConstructor
-@Slf4j
 public class BookReviewController {
 
   private final BookReviewService bookReviewService;
@@ -39,9 +39,9 @@ public class BookReviewController {
   }
 
   @DeleteMapping("/books/{bookId}/reviews/{reviewId}")
-  public Mono<Void> deleteReview(@PathVariable String bookId,
-                                 @PathVariable String reviewId,
-                                 @AuthenticationPrincipal AuthUser authUser) {
+  public Mono<BookReviewResponse> deleteReview(@PathVariable String bookId,
+                                               @PathVariable String reviewId,
+                                               @AuthenticationPrincipal AuthUser authUser) {
     return bookReviewService.deleteReview(bookId, reviewId, authUser);
   }
 }

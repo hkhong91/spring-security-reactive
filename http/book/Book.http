@@ -1,8 +1,8 @@
 ### 책 조회
-GET {{server}}/books/60f7f3b01540627601cd1bc8
+GET {{server}}/books/60fc292745ed2c1c3058ff79
 
 ### 책 조회
-GET {{server}}/books/60f7f3b01540627601cd1bc8/read
+GET {{server}}/books/60fc292745ed2c1c3058ff79/read
 Authorization: {{jwt1}}
 
 ### 책 리스트 조회
@@ -26,7 +26,7 @@ Content-Type: application/json
 }
 
 ### 책 수정
-PATCH {{server}}/books/60f94272cbf48603a3a6439d
+PATCH {{server}}/books/60fc292745ed2c1c3058ff79
 Content-Type: application/json
 
 {
@@ -43,11 +43,11 @@ Content-Type: application/json
 }
 
 ### 책 삭제
-DELETE {{server}}/books/60f7f3b01540627601cd1bc8
+DELETE {{server}}/books/60fb78db2c039c4b4c0869bd
 
 ### 책 좋아요/싫어요
-PUT {{server}}/books/60f94274cbf48603a3a6439e/like-or-hate
-Authorization: {{jwt2}}
+PUT {{server}}/books/60fc292745ed2c1c3058ff79/like-or-hate
+Authorization: {{jwt1}}
 Content-Type: application/json
 
 {

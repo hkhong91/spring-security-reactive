@@ -3,6 +3,7 @@ package com.example.demo.application.book.service;
 import com.example.demo.application.book.model.BookReviewRequest;
 import com.example.demo.application.book.model.BookReviewResponse;
 import com.example.demo.application.user.security.AuthUser;
+import com.example.demo.domain.book.repository.BookRepository;
 import com.example.demo.domain.book.repository.BookReviewRepository;
 import com.example.demo.domain.book.service.BookReviewDomainService;
 import com.example.demo.infrastructure.exception.ServiceException;
@@ -18,6 +19,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class BookReviewService {
 
+  private final BookRepository bookRepository;
   private final BookReviewRepository bookReviewRepository;
   private final BookReviewDomainService bookReviewDomainService;
 
@@ -30,7 +32,10 @@ public class BookReviewService {
   public Mono<BookReviewResponse> createReview(String bookId,
                                                BookReviewRequest request,
                                                AuthUser authUser) {
-    return bookReviewRepository.save(request.toReview(bookId))
+    return bookRepository.findById(bookId)
+        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
+        .flatMap(book -> bookReviewRepository.save(request.toReview(book.getId(), authUser)))
+        .doOnNext(review -> bookReviewDomainService.increaseCount(bookId, 1).subscribe())
         .map(BookReviewResponse::of);
   }
 
@@ -48,14 +53,16 @@ public class BookReviewService {
         .map(BookReviewResponse::of);
   }
 
-  public Mono<Void> deleteReview(String bookId,
-                                 String reviewId,
-                                 AuthUser authUser) {
+  public Mono<BookReviewResponse> deleteReview(String bookId,
+                                               String reviewId,
+                                               AuthUser authUser) {
     return bookReviewRepository.findById(reviewId)
         .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK_REVIEW)))
         .flatMap(review -> {
           review.verify(bookId, authUser.getId());
-          return bookReviewRepository.delete(review);
-        });
+          review.setDeleted(true);
+          return bookReviewRepository.save(review);
+        })
+        .map(BookReviewResponse::of);
   }
 }

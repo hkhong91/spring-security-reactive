@@ -1,0 +1,5 @@
+### 이메일 체크
+GET {{server}}/users/email-check?email=cjdeks@hanmail.net
+
+### 이름 체크
+GET {{server}}/users/name-check?name=청

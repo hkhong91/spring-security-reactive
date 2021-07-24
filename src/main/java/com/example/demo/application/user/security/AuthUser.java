@@ -1,5 +1,6 @@
 package com.example.demo.application.user.security;
 
+import com.example.demo.domain.book.document.sub.Author;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,13 @@ public class AuthUser implements UserDetails {
   private final String id;
   private final String email;
   private final String name;
+
+  public Author toAuthor() {
+    return Author.builder()
+        .id(this.id)
+        .name(this.name)
+        .build();
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

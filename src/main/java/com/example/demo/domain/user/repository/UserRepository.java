@@ -9,4 +9,6 @@ public interface UserRepository extends ReactiveMongoRepository<User, String>,
     ReactiveQuerydslPredicateExecutor<User> {
 
   Mono<User> findByEmail(String email);
+
+  Mono<User> findByName(String name);
 }

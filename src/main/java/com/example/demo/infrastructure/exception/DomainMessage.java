@@ -14,5 +14,5 @@ public enum DomainMessage {
   ;
 
   private final HttpStatus status;
-  private final String message;
+  private final String defaultMessage;
 }

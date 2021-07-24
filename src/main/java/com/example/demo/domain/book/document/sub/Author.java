@@ -6,6 +6,7 @@ import com.example.demo.infrastructure.exception.DomainMessage;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -14,7 +15,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 public class Author {
 
+  @Indexed
   private final String id;
+
   private String name;
 
   public static Author of(AuthUser authUser) {

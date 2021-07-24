@@ -38,9 +38,11 @@ public class JwtProvider {
 
   public String getToken(String authorization) {
     if (Objects.isNull(authorization)) {
+      log.debug("Empty authorization.");
       return null;
     }
     if (!authorization.startsWith(PREFIX)) {
+      log.debug("Abnormal authorization. {}", authorization);
       throw new ServiceException(ServiceMessage.UNAUTHORIZED);
     }
     return authorization.substring(PREFIX.length());

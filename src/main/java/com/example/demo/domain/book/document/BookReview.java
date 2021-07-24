@@ -6,7 +6,6 @@ import com.example.demo.infrastructure.exception.DomainMessage;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -27,8 +26,6 @@ public class BookReview {
   @Indexed
   private final String bookId;
 
-  @Indexed
-  @CreatedBy
   private final Author author;
 
   @CreatedDate
@@ -38,6 +35,8 @@ public class BookReview {
   private final LocalDateTime updatedAt;
 
   private String content;
+
+  private boolean deleted;
 
   public void verify(String bookId) {
     if (!this.bookId.equals(bookId)) {

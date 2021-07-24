@@ -6,15 +6,17 @@ import com.example.demo.application.book.model.BookResponse;
 import com.example.demo.application.book.service.BookService;
 import com.example.demo.application.user.security.AuthUser;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 @RestController
+@Validated
 @RequiredArgsConstructor
-@Slf4j
 public class BookController {
 
   private final BookService bookService;
@@ -58,7 +60,7 @@ public class BookController {
 
   @PutMapping("/books/{bookId}/like-or-hate")
   public Mono<BookResponse> likeOrHateBook(@PathVariable String bookId,
-                                           @RequestBody BookLikeOrHateRequest request,
+                                           @RequestBody @Valid BookLikeOrHateRequest request,
                                            @AuthenticationPrincipal AuthUser authUser) {
     return bookService.likeOrHateBook(bookId, request, authUser);
   }

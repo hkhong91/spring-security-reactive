@@ -5,6 +5,7 @@ spring:
       auto-index-creation: true
 logging:
   level:
+    ROOT: INFO
     com.example.demo: DEBUG
     org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG
 jwt:
