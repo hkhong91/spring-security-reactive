@@ -1,6 +1,7 @@
 package com.example.demo.infrastructure.exception;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ServerWebInputException;
@@ -28,6 +29,11 @@ public class ErrorHandler {
 
   @ExceptionHandler(ValidationException.class)
   public Mono<ResponseEntity<ErrorResponse>> handler(ValidationException exception) {
+    return Mono.just(ErrorResponse.entity(exception));
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public Mono<ResponseEntity<ErrorResponse>> handler(AccessDeniedException exception) {
     return Mono.just(ErrorResponse.entity(exception));
   }
 

@@ -1,3 +1,23 @@
+### 로그인
+POST {{server}}/users/signin
+Content-Type: application/json
+
+{
+  "email": "hkhong91@gmail.com",
+  "password": "abc1234!"
+}
+
+### 가입
+POST {{server}}/users/signup
+Content-Type: application/json
+
+{
+  "email": "hkhong91@gmail.com",
+  "name": "홍아지",
+  "gender": "M",
+  "password": "abc1234!"
+}
+
 ### 이메일 체크
 GET {{server}}/users/email-check?email=cjdeks@hanmail.net
 

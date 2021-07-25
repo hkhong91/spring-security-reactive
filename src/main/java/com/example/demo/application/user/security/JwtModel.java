@@ -7,5 +7,6 @@ import lombok.Getter;
 @Builder
 public class JwtModel {
 
+  private final String tokenType;
   private final String accessToken;
 }

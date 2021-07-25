@@ -10,10 +10,11 @@ GET {{server}}/books
 
 ### 책 리스트 조회
 GET {{server}}/books/read
-Authorization: {{jwt2}}
+Authorization: {{jwt1}}
 
 ### 책 등록
 POST {{server}}/books
+Authorization: {{jwt1}}
 Content-Type: application/json
 
 {
@@ -27,6 +28,7 @@ Content-Type: application/json
 
 ### 책 수정
 PATCH {{server}}/books/60fc292745ed2c1c3058ff79
+Authorization: {{jwt1}}
 Content-Type: application/json
 
 {
@@ -43,7 +45,8 @@ Content-Type: application/json
 }
 
 ### 책 삭제
-DELETE {{server}}/books/60fb78db2c039c4b4c0869bd
+DELETE {{server}}/books/60fcc372030699554e4e66c5
+Authorization: {{jwt1}}
 
 ### 책 좋아요/싫어요
 PUT {{server}}/books/60fc292745ed2c1c3058ff79/like-or-hate

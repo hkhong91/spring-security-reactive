@@ -8,11 +8,13 @@ import lombok.Getter;
 @Builder
 public class UserSigninResponse {
 
-  private final String token;
+  private final String tokenType;
+  private final String accessToken;
 
   public static UserSigninResponse of(JwtModel jwtModel) {
     return UserSigninResponse.builder()
-        .token(jwtModel.getAccessToken())
+        .tokenType(jwtModel.getTokenType())
+        .accessToken(jwtModel.getAccessToken())
         .build();
   }
 }

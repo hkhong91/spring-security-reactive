@@ -10,6 +10,7 @@ public enum ServiceMessage {
 
   SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error."),
   UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Unauthorized."),
+  ACCESS_DENIED(HttpStatus.FORBIDDEN, "Access denied."),
   INPUT_ERROR(HttpStatus.BAD_REQUEST, "Input error."),
   VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "Fail validation"),
   NOT_FOUND_BOOK(HttpStatus.NOT_FOUND, "Not found book."),

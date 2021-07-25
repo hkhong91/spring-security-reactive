@@ -3,11 +3,13 @@ package com.example.demo.application.user.model;
 import com.example.demo.application.user.validation.Password;
 import com.example.demo.application.user.validation.UserName;
 import com.example.demo.domain.user.document.User;
+import com.example.demo.domain.user.value.Authority;
 import com.example.demo.domain.user.value.Gender;
 import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
+import java.util.Collections;
 
 @Getter
 public class UserSignupRequest {
@@ -29,6 +31,7 @@ public class UserSignupRequest {
         .name(this.name)
         .password(passwordEncoder.encode(this.password))
         .gender(this.gender)
+        .authorities(Collections.singletonList(Authority.USER.name()))
         .build();
   }
 }

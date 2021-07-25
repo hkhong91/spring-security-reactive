@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ServerWebInputException;
@@ -67,6 +68,16 @@ public class ErrorResponse {
         .body(ErrorResponse.builder()
             .name(serviceMessage.name())
             .message(exception.getMessage())
+            .build());
+  }
+
+  public static ResponseEntity<ErrorResponse> entity(AccessDeniedException exception) {
+    log.warn("AccessDeniedException! {}", exception.getMessage());
+    ServiceMessage serviceMessage = ServiceMessage.ACCESS_DENIED;
+    return ResponseEntity.status(serviceMessage.getStatus())
+        .body(ErrorResponse.builder()
+            .name(serviceMessage.name())
+            .message(serviceMessage.getDefaultMessage())
             .build());
   }
 

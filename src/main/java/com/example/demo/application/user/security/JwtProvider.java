@@ -24,11 +24,12 @@ import java.util.Objects;
 @Slf4j
 public class JwtProvider {
 
-  private static final String PREFIX = "Bearer ";
+  private static final String TYPE = "Bearer";
 
   private static final String ID = "id";
   private static final String NAME = "name";
   private static final String EMAIL = "email";
+  private static final String AUTHORITY = "authority";
 
   @Value("${jwt.secret-key}")
   private String secretKey;
@@ -41,11 +42,11 @@ public class JwtProvider {
       log.debug("Empty authorization.");
       return null;
     }
-    if (!authorization.startsWith(PREFIX)) {
+    if (!authorization.startsWith(TYPE)) {
       log.debug("Abnormal authorization. {}", authorization);
       throw new ServiceException(ServiceMessage.UNAUTHORIZED);
     }
-    return authorization.substring(PREFIX.length());
+    return authorization.substring(TYPE.length() + 1);
   }
 
   public Authentication authenticate(String token) {
@@ -55,12 +56,14 @@ public class JwtProvider {
         .id(claims.get(ID).asString())
         .email(claims.get(EMAIL).asString())
         .name(claims.get(NAME).asString())
+        .authorities(claims.get(AUTHORITY).asList(String.class))
         .build();
     return new UsernamePasswordAuthenticationToken(authUser, "", authUser.getAuthorities());
   }
 
   public JwtModel generate(User user) {
     return JwtModel.builder()
+        .tokenType(TYPE)
         .accessToken(this.sign(user))
         .build();
   }
@@ -73,6 +76,7 @@ public class JwtProvider {
         .withClaim(ID, user.getId())
         .withClaim(EMAIL, user.getEmail())
         .withClaim(NAME, user.getName())
+        .withClaim(AUTHORITY, user.getAuthorities())
         .sign(this.getAlgorithm());
   }
 

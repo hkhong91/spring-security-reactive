@@ -4,17 +4,21 @@ import com.example.demo.domain.book.document.sub.Author;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Builder
 public class AuthUser implements UserDetails {
 
   private final String id;
-  private final String email;
   private final String name;
+  private final String email;
+  private final List<String> authorities;
 
   public Author toAuthor() {
     return Author.builder()
@@ -25,7 +29,9 @@ public class AuthUser implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
+    return this.authorities.stream()
+        .map(SimpleGrantedAuthority::new)
+        .collect(Collectors.toList());
   }
 
   @Override
