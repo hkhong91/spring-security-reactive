@@ -2,6 +2,8 @@ package com.example.demo.application.book.model;
 
 import com.example.demo.domain.book.document.Book;
 import com.example.demo.domain.book.document.BookRead;
+import com.example.demo.domain.book.document.sub.Aggregation;
+import com.example.demo.domain.book.document.sub.Category;
 import com.example.demo.domain.book.value.LikeOrHate;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
@@ -18,12 +20,11 @@ public class BookResponse {
   private final String id;
   private final String title;
   private final Set<String> authors;
+  private final Set<Category> categories;
   private final LocalDate publishedDate;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
-  private final int likeCount;
-  private final int hateCount;
-  private final int reviewCount;
+  private final Aggregation aggregation;
   private final LikeOrHate likeOrHate;
 
   public static BookResponse of(Book book, LikeOrHate likeOrHate) {
@@ -31,12 +32,11 @@ public class BookResponse {
         .id(book.getId())
         .title(book.getTitle())
         .authors(book.getAuthors())
+        .categories(book.getCategories())
         .publishedDate(book.getPublishedDate())
         .createdAt(book.getCreatedAt())
         .updatedAt(book.getUpdatedAt())
-        .likeCount(book.getLikeCount())
-        .hateCount(book.getHateCount())
-        .reviewCount(book.getReviewCount())
+        .aggregation(book.getAggregation())
         .likeOrHate(likeOrHate)
         .build();
   }

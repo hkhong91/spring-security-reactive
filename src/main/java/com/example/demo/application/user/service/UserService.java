@@ -1,9 +1,7 @@
 package com.example.demo.application.user.service;
 
-import com.example.demo.application.user.model.UserResponse;
-import com.example.demo.application.user.model.UserSigninRequest;
-import com.example.demo.application.user.model.UserSigninResponse;
-import com.example.demo.application.user.model.UserSignupRequest;
+import com.example.demo.application.user.model.*;
+import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.application.user.security.JwtProvider;
 import com.example.demo.domain.user.repository.UserRepository;
 import com.example.demo.infrastructure.exception.ServiceException;
@@ -52,5 +50,14 @@ public class UserService {
     return userRepository.findByName(name)
         .flatMap(user -> Objects.isNull(user) ? Mono.empty()
             : Mono.error(new ServiceException(ServiceMessage.EXISTS_USER)));
+  }
+
+  public Mono<UserResponse> addAuthority(UserAuthorityRequest request, AuthUser authUser) {
+    return userRepository.findById(authUser.getId())
+        .flatMap(user -> {
+          user.getAuthorities().add(request.getAuthority());
+          return userRepository.save(user);
+        })
+        .map(UserResponse::of);
   }
 }

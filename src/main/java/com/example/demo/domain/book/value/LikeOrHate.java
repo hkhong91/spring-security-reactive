@@ -34,8 +34,8 @@ public enum LikeOrHate {
     Update update = new Update();
     int likeCount = pair.getFirst();
     int hateCount = pair.getSecond();
-    if (likeCount != 0) update.inc("likeCount", likeCount);
-    if (hateCount != 0) update.inc("hateCount", hateCount);
+    if (likeCount != 0) update.inc("aggregation.likeCount", likeCount);
+    if (hateCount != 0) update.inc("aggregation.hateCount", hateCount);
     return update;
   }
 }

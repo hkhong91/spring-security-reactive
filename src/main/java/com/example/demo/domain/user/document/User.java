@@ -1,5 +1,6 @@
 package com.example.demo.domain.user.document;
 
+import com.example.demo.domain.user.value.Authority;
 import com.example.demo.domain.user.value.Gender;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Document(collection = "User")
 @Getter
@@ -38,5 +39,5 @@ public class User {
 
   private Gender gender;
 
-  private List<String> authorities;
+  private Set<Authority> authorities;
 }

@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.demo.domain.user.document.User;
+import com.example.demo.domain.user.value.Authority;
 import com.example.demo.infrastructure.exception.ServiceException;
 import com.example.demo.infrastructure.exception.ServiceMessage;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -76,7 +78,10 @@ public class JwtProvider {
         .withClaim(ID, user.getId())
         .withClaim(EMAIL, user.getEmail())
         .withClaim(NAME, user.getName())
-        .withClaim(AUTHORITY, user.getAuthorities())
+        .withClaim(AUTHORITY, user.getAuthorities()
+            .stream()
+            .map(Authority::name)
+            .collect(Collectors.toList()))
         .sign(this.getAlgorithm());
   }
 

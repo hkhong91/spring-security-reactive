@@ -1,12 +1,11 @@
 package com.example.demo.application.user.controller;
 
-import com.example.demo.application.user.model.UserResponse;
-import com.example.demo.application.user.model.UserSigninRequest;
-import com.example.demo.application.user.model.UserSigninResponse;
-import com.example.demo.application.user.model.UserSignupRequest;
+import com.example.demo.application.user.model.*;
+import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.application.user.service.UserService;
 import com.example.demo.application.user.validation.UserName;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -39,5 +38,11 @@ public class UserController {
   @GetMapping("/users/name-check")
   public Mono<Void> checkForName(@RequestParam @UserName String name) {
     return userService.checkForName(name);
+  }
+
+  @PostMapping("/users/me/authorities")
+  public Mono<UserResponse> addAuthority(@RequestBody @Valid UserAuthorityRequest request,
+                                         @AuthenticationPrincipal AuthUser authUser) {
+    return userService.addAuthority(request, authUser);
   }
 }

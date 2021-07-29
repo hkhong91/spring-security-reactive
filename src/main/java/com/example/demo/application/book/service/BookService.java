@@ -1,11 +1,13 @@
 package com.example.demo.application.book.service;
 
+import com.example.demo.application.book.model.BookCategoryRequest;
 import com.example.demo.application.book.model.BookLikeOrHateRequest;
 import com.example.demo.application.book.model.BookRequest;
 import com.example.demo.application.book.model.BookResponse;
 import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.domain.book.document.Book;
 import com.example.demo.domain.book.document.BookRead;
+import com.example.demo.domain.book.document.sub.Category;
 import com.example.demo.domain.book.repository.BookReadRepository;
 import com.example.demo.domain.book.repository.BookRepository;
 import com.example.demo.domain.book.service.BookLikeOrHateDomainService;
@@ -15,9 +17,12 @@ import com.example.demo.infrastructure.exception.ServiceMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.function.TupleUtils;
+
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +79,23 @@ public class BookService {
           book.setTitle(request.getTitle());
           book.setAuthors(request.getAuthors());
           book.setPublishedDate(request.getPublishedDate());
+          return bookRepository.save(book);
+        })
+        .map(BookResponse::of);
+  }
+
+  public Mono<BookResponse> addBookCategories(String bookId,
+                                              BookCategoryRequest request,
+                                              AuthUser authUser) {
+    return bookRepository.findById(bookId)
+        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
+        .flatMap(book -> {
+          Set<Category> categories = book.getCategories();
+          if (CollectionUtils.isEmpty(categories)) {
+            book.setCategories(request.toCategories());
+          } else {
+            categories.addAll(request.toCategories());
+          }
           return bookRepository.save(book);
         })
         .map(BookResponse::of);

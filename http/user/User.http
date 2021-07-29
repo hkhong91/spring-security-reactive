@@ -23,3 +23,12 @@ GET {{server}}/users/email-check?email=cjdeks@hanmail.net
 
 ### 이름 체크
 GET {{server}}/users/name-check?name=청
+
+### 권한 추가
+POST {{server}}/users/me/authorities
+Authorization: {{jwt1}}
+Content-Type: application/json
+
+{
+  "authority": "ADMIN"
+}

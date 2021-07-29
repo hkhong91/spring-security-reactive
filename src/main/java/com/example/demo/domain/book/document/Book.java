@@ -1,5 +1,7 @@
 package com.example.demo.domain.book.document;
 
+import com.example.demo.domain.book.document.sub.Aggregation;
+import com.example.demo.domain.book.document.sub.Category;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +29,8 @@ public class Book {
   @LastModifiedDate
   private final LocalDateTime updatedAt;
 
+  private Set<Category> categories;
+
   private String title;
 
   private String introduction;
@@ -35,9 +39,5 @@ public class Book {
 
   private LocalDate publishedDate;
 
-  private int likeCount;
-
-  private int hateCount;
-
-  private int reviewCount;
+  private Aggregation aggregation;
 }

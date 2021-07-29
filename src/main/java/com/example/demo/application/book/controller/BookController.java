@@ -1,5 +1,6 @@
 package com.example.demo.application.book.controller;
 
+import com.example.demo.application.book.model.BookCategoryRequest;
 import com.example.demo.application.book.model.BookLikeOrHateRequest;
 import com.example.demo.application.book.model.BookRequest;
 import com.example.demo.application.book.model.BookResponse;
@@ -45,22 +46,30 @@ public class BookController {
   }
 
   @PostMapping("/books")
-  @PreAuthorize(Authority.Has.SELLER)
+  @PreAuthorize(Authority.Has.ADMIN)
   public Mono<BookResponse> createBook(@RequestBody BookRequest request,
                                        @AuthenticationPrincipal AuthUser authUser) {
     return bookService.createBook(request);
   }
 
   @PatchMapping("/books/{bookId}")
-  @PreAuthorize(Authority.Has.SELLER)
+  @PreAuthorize(Authority.Has.ADMIN)
   public Mono<BookResponse> updateBook(@PathVariable String bookId,
                                        @RequestBody BookRequest request,
                                        @AuthenticationPrincipal AuthUser authUser) {
     return bookService.updateBook(bookId, request);
   }
 
+  @PutMapping("/books/{bookId}/categories")
+  @PreAuthorize(Authority.Has.ADMIN)
+  public Mono<BookResponse> addBookCategories(@PathVariable String bookId,
+                                              @RequestBody @Valid BookCategoryRequest request,
+                                              @AuthenticationPrincipal AuthUser authUser) {
+    return bookService.addBookCategories(bookId, request, authUser);
+  }
+
   @DeleteMapping("/books/{bookId}")
-  @PreAuthorize(Authority.Has.SELLER)
+  @PreAuthorize(Authority.Has.ADMIN)
   public Mono<Void> deleteBook(@PathVariable String bookId,
                                @AuthenticationPrincipal AuthUser authUser) {
     return bookService.deleteBook(bookId);

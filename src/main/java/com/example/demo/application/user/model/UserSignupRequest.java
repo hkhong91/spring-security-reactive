@@ -31,7 +31,7 @@ public class UserSignupRequest {
         .name(this.name)
         .password(passwordEncoder.encode(this.password))
         .gender(this.gender)
-        .authorities(Collections.singletonList(Authority.USER.name()))
+        .authorities(Collections.singleton(Authority.USER))
         .build();
   }
 }

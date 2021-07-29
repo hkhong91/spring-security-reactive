@@ -18,7 +18,7 @@ public class BookReviewDomainService {
 
   public Mono<UpdateResult> increaseCount(String bookId, int inc) {
     Query query = Query.query(Criteria.where("id").is(bookId));
-    Update update = new Update().inc("reviewCount", inc);
+    Update update = new Update().inc("aggregation.reviewCount", inc);
     return mongoTemplate.upsert(query, update, Book.class);
   }
 }

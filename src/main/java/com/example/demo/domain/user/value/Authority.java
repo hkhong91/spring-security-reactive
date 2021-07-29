@@ -8,13 +8,13 @@ import lombok.RequiredArgsConstructor;
 public enum Authority {
 
   USER(Has.USER),
-  SELLER(Has.SELLER),
+  ADMIN(Has.ADMIN),
   ;
 
   private final String has;
 
   public static class Has {
     public static final String USER = "hasAuthority('USER')";
-    public static final String SELLER = "hasAuthority('ADMIN')";
+    public static final String ADMIN = "hasAuthority('ADMIN')";
   }
 }
