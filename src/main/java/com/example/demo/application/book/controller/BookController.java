@@ -7,6 +7,7 @@ import com.example.demo.application.book.model.response.BookResponse;
 import com.example.demo.application.book.service.BookService;
 import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.domain.user.value.Authority;
+import com.example.demo.infrastructure.webflux.ClientIp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,13 +26,15 @@ public class BookController {
   private final BookService bookService;
 
   @GetMapping("/books/{bookId}")
-  public Mono<BookResponse> getBook(@PathVariable String bookId) {
+  public Mono<BookResponse> getBook(@PathVariable String bookId,
+                                    @ClientIp String clientIp) {
     return bookService.getBook(bookId);
   }
 
   @GetMapping("/books/{bookId}/read")
   public Mono<BookReadResponse> getBook(@PathVariable String bookId,
-                                        @AuthenticationPrincipal AuthUser authUser) {
+                                        @AuthenticationPrincipal AuthUser authUser,
+                                        @ClientIp String clientIp) {
     return bookService.getBook(bookId, authUser);
   }
 
