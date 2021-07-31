@@ -1,5 +1,6 @@
 package com.example.demo.domain.book.service;
 
+import com.example.demo.domain.book.document.sub.Aggregation;
 import com.example.demo.domain.book.repository.BookRepository;
 import com.mongodb.client.result.UpdateResult;
 import lombok.RequiredArgsConstructor;
@@ -15,44 +16,44 @@ public class BookAggregationDomainService {
 
   public Mono<UpdateResult> like(String bookId) {
     Update update = new Update()
-        .inc("aggregation.likeCount", 1);
+        .inc(Aggregation.LIKE_COUNT, 1);
     return bookRepository.upsertById(bookId, update);
   }
 
   public Mono<UpdateResult> likeAndUnhate(String bookId) {
     Update update = new Update()
-        .inc("aggregation.likeCount", 1)
-        .inc("aggregation.hateCount", -1);
+        .inc(Aggregation.LIKE_COUNT, 1)
+        .inc(Aggregation.HATE_COUNT, -1);
     return bookRepository.upsertById(bookId, update);
   }
 
   public Mono<UpdateResult> unlike(String bookId) {
     Update update = new Update()
-        .inc("aggregation.likeCount", -1);
+        .inc(Aggregation.LIKE_COUNT, -1);
     return bookRepository.upsertById(bookId, update);
   }
 
   public Mono<UpdateResult> hate(String bookId) {
     Update update = new Update()
-        .inc("aggregation.hateCount", 1);
+        .inc(Aggregation.HATE_COUNT, 1);
     return bookRepository.upsertById(bookId, update);
   }
 
   public Mono<UpdateResult> hateAndUnlike(String bookId) {
     Update update = new Update()
-        .inc("aggregation.hateCount", 1)
-        .inc("aggregation.likeCount", -1);
+        .inc(Aggregation.HATE_COUNT, 1)
+        .inc(Aggregation.LIKE_COUNT, -1);
     return bookRepository.upsertById(bookId, update);
   }
 
   public Mono<UpdateResult> unhate(String bookId) {
     Update update = new Update()
-        .inc("aggregation.hateCount", -1);
+        .inc(Aggregation.HATE_COUNT, -1);
     return bookRepository.upsertById(bookId, update);
   }
 
   public Mono<UpdateResult> review(String bookId, int inc) {
-    Update update = new Update().inc("aggregation.reviewCount", inc);
+    Update update = new Update().inc(Aggregation.REVIEW_COUNT, inc);
     return bookRepository.upsertById(bookId, update);
   }
 }

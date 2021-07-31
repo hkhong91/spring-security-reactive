@@ -16,7 +16,7 @@ public class BookRepositoryCustomImpl implements BookRepositoryCustom {
 
   @Override
   public Mono<UpdateResult> upsertById(String bookId, Update update) {
-    Query query = Query.query(Criteria.where("id").is(bookId));
+    Query query = Query.query(Criteria.where(Book.ID).is(bookId));
     return mongoTemplate.upsert(query, update, Book.class);
   }
 }

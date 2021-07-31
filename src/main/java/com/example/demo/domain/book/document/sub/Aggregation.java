@@ -9,6 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Aggregation {
 
+  public static final String LIKE_COUNT = "aggregation.likeCount";
+  public static final String HATE_COUNT = "aggregation.hateCount";
+  public static final String REVIEW_COUNT = "aggregation.reviewCount";
+
   private int likeCount;
 
   private int hateCount;

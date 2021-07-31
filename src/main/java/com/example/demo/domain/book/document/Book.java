@@ -21,6 +21,8 @@ import java.util.Set;
 @Builder
 public class Book {
 
+  public static final String ID = "id";
+
   @Id
   private final String id;
 
