@@ -1,0 +1,23 @@
+### 책 좋아요
+POST {{server}}/books/61051fa985de2038eccc5393/likes
+Authorization: {{jwt1}}
+
+### 책 싫어요일 때 좋아요
+PUT {{server}}/books/61051fa985de2038eccc5393/likes/610522d5d94fa557530f2999
+Authorization: {{jwt1}}
+
+### 책 좋아요 해제
+DELETE {{server}}/books/61051fa985de2038eccc5393/likes/610524f1a9e1cb1fcc8dde1e
+Authorization: {{jwt1}}
+
+### 책 싫어요
+POST {{server}}/books/61051fa985de2038eccc5393/hates
+Authorization: {{jwt1}}
+
+### 책 좋어요일 때 싫어요
+PUT {{server}}/books/61051fa985de2038eccc5393/hates/610522d5d94fa557530f2999
+Authorization: {{jwt1}}
+
+### 책 싫어요 해제
+DELETE {{server}}/books/61051fa985de2038eccc5393/hates/610522d5d94fa557530f2999
+Authorization: {{jwt1}}

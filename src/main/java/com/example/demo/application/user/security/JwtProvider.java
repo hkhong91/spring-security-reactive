@@ -5,7 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.demo.domain.user.document.User;
-import com.example.demo.domain.user.value.Authority;
+import com.example.demo.domain.user.repository.UserRepository;
 import com.example.demo.infrastructure.exception.ServiceException;
 import com.example.demo.infrastructure.exception.ServiceMessage;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +14,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +27,10 @@ import java.util.stream.Collectors;
 public class JwtProvider {
 
   private static final String TYPE = "Bearer";
-
   private static final String ID = "id";
-  private static final String NAME = "name";
-  private static final String EMAIL = "email";
-  private static final String AUTHORITY = "authority";
-
+  private final UserRepository userRepository;
   @Value("${jwt.secret-key}")
   private String secretKey;
-
   @Value("${jwt.expires}")
   private long expires;
 
@@ -51,16 +46,15 @@ public class JwtProvider {
     return authorization.substring(TYPE.length() + 1);
   }
 
-  public Authentication authenticate(String token) {
+  public Mono<Authentication> authenticate(String token) {
     DecodedJWT decodedJWT = this.verify(token);
     Map<String, Claim> claims = decodedJWT.getClaims();
-    AuthUser authUser = AuthUser.builder()
-        .id(claims.get(ID).asString())
-        .email(claims.get(EMAIL).asString())
-        .name(claims.get(NAME).asString())
-        .authorities(claims.get(AUTHORITY).asList(String.class))
-        .build();
-    return new UsernamePasswordAuthenticationToken(authUser, "", authUser.getAuthorities());
+    String userId = claims.get(ID).asString();
+    return userRepository.findById(userId)
+        .map(user -> {
+          AuthUser authUser = AuthUser.of(user);
+          return new UsernamePasswordAuthenticationToken(authUser, "", authUser.getAuthorities());
+        });
   }
 
   public JwtModel generate(User user) {
@@ -76,12 +70,6 @@ public class JwtProvider {
         .withIssuedAt(now)
         .withExpiresAt(Date.from(now.toInstant().plus(Duration.ofHours(this.expires))))
         .withClaim(ID, user.getId())
-        .withClaim(EMAIL, user.getEmail())
-        .withClaim(NAME, user.getName())
-        .withClaim(AUTHORITY, user.getAuthorities()
-            .stream()
-            .map(Authority::name)
-            .collect(Collectors.toList()))
         .sign(this.getAlgorithm());
   }
 

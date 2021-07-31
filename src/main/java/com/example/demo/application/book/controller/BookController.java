@@ -1,9 +1,9 @@
 package com.example.demo.application.book.controller;
 
-import com.example.demo.application.book.model.BookCategoryRequest;
-import com.example.demo.application.book.model.BookLikeOrHateRequest;
-import com.example.demo.application.book.model.BookRequest;
-import com.example.demo.application.book.model.BookResponse;
+import com.example.demo.application.book.model.request.BookCategoryRequest;
+import com.example.demo.application.book.model.request.BookRequest;
+import com.example.demo.application.book.model.response.BookReadResponse;
+import com.example.demo.application.book.model.response.BookResponse;
 import com.example.demo.application.book.service.BookService;
 import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.domain.user.value.Authority;
@@ -30,8 +30,8 @@ public class BookController {
   }
 
   @GetMapping("/books/{bookId}/read")
-  public Mono<BookResponse> getBook(@PathVariable String bookId,
-                                    @AuthenticationPrincipal AuthUser authUser) {
+  public Mono<BookReadResponse> getBook(@PathVariable String bookId,
+                                        @AuthenticationPrincipal AuthUser authUser) {
     return bookService.getBook(bookId, authUser);
   }
 
@@ -41,7 +41,7 @@ public class BookController {
   }
 
   @GetMapping("/books/read")
-  public Flux<BookResponse> getBooks(@AuthenticationPrincipal AuthUser authUser) {
+  public Flux<BookReadResponse> getBooks(@AuthenticationPrincipal AuthUser authUser) {
     return bookService.getBooks(authUser);
   }
 
@@ -49,7 +49,7 @@ public class BookController {
   @PreAuthorize(Authority.Has.ADMIN)
   public Mono<BookResponse> createBook(@RequestBody BookRequest request,
                                        @AuthenticationPrincipal AuthUser authUser) {
-    return bookService.createBook(request);
+    return bookService.createBook(request, authUser);
   }
 
   @PatchMapping("/books/{bookId}")
@@ -57,7 +57,7 @@ public class BookController {
   public Mono<BookResponse> updateBook(@PathVariable String bookId,
                                        @RequestBody BookRequest request,
                                        @AuthenticationPrincipal AuthUser authUser) {
-    return bookService.updateBook(bookId, request);
+    return bookService.updateBook(bookId, request, authUser);
   }
 
   @PutMapping("/books/{bookId}/categories")
@@ -72,13 +72,6 @@ public class BookController {
   @PreAuthorize(Authority.Has.ADMIN)
   public Mono<Void> deleteBook(@PathVariable String bookId,
                                @AuthenticationPrincipal AuthUser authUser) {
-    return bookService.deleteBook(bookId);
-  }
-
-  @PutMapping("/books/{bookId}/like-or-hate")
-  public Mono<BookResponse> likeOrHateBook(@PathVariable String bookId,
-                                           @RequestBody @Valid BookLikeOrHateRequest request,
-                                           @AuthenticationPrincipal AuthUser authUser) {
-    return bookService.likeOrHateBook(bookId, request, authUser);
+    return bookService.deleteBook(bookId, authUser);
   }
 }

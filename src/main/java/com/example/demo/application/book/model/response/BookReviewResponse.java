@@ -1,7 +1,7 @@
-package com.example.demo.application.book.model;
+package com.example.demo.application.book.model.response;
 
 import com.example.demo.domain.book.document.BookReview;
-import com.example.demo.domain.book.document.sub.Author;
+import com.example.demo.domain.book.document.sub.Creator;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,7 +13,7 @@ public class BookReviewResponse {
 
   private final String id;
   private final String bookId;
-  private final Author author;
+  private final Creator reviewer;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
   private final String content;
@@ -24,10 +24,10 @@ public class BookReviewResponse {
     return BookReviewResponse.builder()
         .id(review.getId())
         .bookId(review.getBookId())
-        .author(review.getAuthor())
+        .reviewer(review.getReviewer())
         .createdAt(review.getCreatedAt())
         .updatedAt(review.getUpdatedAt())
-        .content(deleted ? null : review.getContent())
+        .content(deleted ? "" : review.getContent())
         .deleted(deleted)
         .build();
   }

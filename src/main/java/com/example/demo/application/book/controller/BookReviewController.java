@@ -1,7 +1,7 @@
 package com.example.demo.application.book.controller;
 
-import com.example.demo.application.book.model.BookReviewRequest;
-import com.example.demo.application.book.model.BookReviewResponse;
+import com.example.demo.application.book.model.request.BookReviewRequest;
+import com.example.demo.application.book.model.response.BookReviewResponse;
 import com.example.demo.application.book.service.BookReviewService;
 import com.example.demo.application.user.security.AuthUser;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.demo.application.book.model;
+package com.example.demo.application.book.model.request;
 
 import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.domain.book.document.BookReview;
@@ -13,7 +13,7 @@ public class BookReviewRequest {
     return BookReview.builder()
         .bookId(bookId)
         .content(this.content)
-        .author(authUser.toAuthor())
+        .reviewer(authUser.toCreator())
         .build();
   }
 }

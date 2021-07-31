@@ -1,4 +1,4 @@
-package com.example.demo.application.user.model;
+package com.example.demo.application.user.model.request;
 
 import com.example.demo.domain.user.value.Authority;
 import lombok.Getter;

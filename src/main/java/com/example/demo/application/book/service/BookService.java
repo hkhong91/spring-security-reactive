@@ -1,19 +1,14 @@
 package com.example.demo.application.book.service;
 
-import com.example.demo.application.book.model.BookCategoryRequest;
-import com.example.demo.application.book.model.BookLikeOrHateRequest;
-import com.example.demo.application.book.model.BookRequest;
-import com.example.demo.application.book.model.BookResponse;
+import com.example.demo.application.book.model.request.BookCategoryRequest;
+import com.example.demo.application.book.model.request.BookRequest;
+import com.example.demo.application.book.model.response.BookReadResponse;
+import com.example.demo.application.book.model.response.BookResponse;
 import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.domain.book.document.Book;
-import com.example.demo.domain.book.document.BookRead;
 import com.example.demo.domain.book.document.sub.Category;
-import com.example.demo.domain.book.repository.BookReadRepository;
-import com.example.demo.domain.book.repository.BookRepository;
+import com.example.demo.domain.book.service.BookDomainService;
 import com.example.demo.domain.book.service.BookLikeOrHateDomainService;
-import com.example.demo.domain.book.value.LikeOrHate;
-import com.example.demo.infrastructure.exception.ServiceException;
-import com.example.demo.infrastructure.exception.ServiceMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,57 +24,51 @@ import java.util.Set;
 @Slf4j
 public class BookService {
 
-  private final BookRepository bookRepository;
-  private final BookReadRepository bookReadRepository;
+  private final BookDomainService bookDomainService;
   private final BookLikeOrHateDomainService bookLikeOrHateDomainService;
 
   public Mono<BookResponse> getBook(String bookId) {
-    return bookRepository.findById(bookId)
-        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
+    return bookDomainService.getOne(bookId)
         .map(BookResponse::of);
   }
 
-  public Mono<BookResponse> getBook(String bookId,
-                                    AuthUser authUser) {
+  public Mono<BookReadResponse> getBook(String bookId,
+                                        AuthUser authUser) {
     String userId = authUser.getId();
-    return bookRepository.findById(bookId)
-        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
-        .zipWith(bookReadRepository.findByBookIdAndUserId(bookId, userId))
-        .map(TupleUtils.function(BookResponse::of));
+    return bookDomainService.getOne(bookId)
+        .zipWith(bookLikeOrHateDomainService.getOneOrDefault(bookId, userId))
+        .map(TupleUtils.function(BookReadResponse::of));
   }
 
   public Flux<BookResponse> getBooks() {
-    return bookRepository.findAll()
-        .switchIfEmpty(Flux.empty())
+    return bookDomainService.getList()
         .map(BookResponse::of);
   }
 
-  public Flux<BookResponse> getBooks(AuthUser authUser) {
+  public Flux<BookReadResponse> getBooks(AuthUser authUser) {
     String userId = authUser.getId();
-    return bookRepository.findAll()
-        .switchIfEmpty(Flux.empty())
+    return bookDomainService.getList()
         .collectMap(Book::getId, book -> book)
-        .flatMap(bookMap -> bookReadRepository.findAllByBookIdInAndUserId(bookMap.keySet(), userId)
-            .collectMap(BookRead::getBookId, read -> read)
-            .map(readMap -> Flux.fromIterable(bookMap.keySet())
-                .map(bookId -> BookResponse.of(bookMap.get(bookId), readMap.get(bookId)))))
+        .flatMap(bookMap -> bookLikeOrHateDomainService.getMap(bookMap.keySet(), userId)
+            .map(likeOrHateMap -> Flux.fromIterable(bookMap.keySet())
+                .map(bookId -> BookReadResponse.of(bookMap.get(bookId), likeOrHateMap.get(bookId)))))
         .flatMapMany(response -> response);
   }
 
-  public Mono<BookResponse> createBook(BookRequest request) {
-    return bookRepository.save(request.toBook())
+  public Mono<BookResponse> createBook(BookRequest request, AuthUser authUser) {
+    return bookDomainService.createOne(request.toBook(authUser))
         .map(BookResponse::of);
   }
 
   public Mono<BookResponse> updateBook(String bookId,
-                                       BookRequest request) {
-    return bookRepository.findById(bookId)
-        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
+                                       BookRequest request,
+                                       AuthUser authUser) {
+    return bookDomainService.getOne(bookId)
         .flatMap(book -> {
           book.setTitle(request.getTitle());
           book.setAuthors(request.getAuthors());
           book.setPublishedDate(request.getPublishedDate());
-          return bookRepository.save(book);
+          return bookDomainService.createOne(book);
         })
         .map(BookResponse::of);
   }
@@ -87,34 +76,19 @@ public class BookService {
   public Mono<BookResponse> addBookCategories(String bookId,
                                               BookCategoryRequest request,
                                               AuthUser authUser) {
-    return bookRepository.findById(bookId)
-        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
+    return bookDomainService.getOne(bookId)
         .flatMap(book -> {
           Set<Category> categories = book.getCategories();
-          if (CollectionUtils.isEmpty(categories)) {
-            book.setCategories(request.toCategories());
-          } else {
-            categories.addAll(request.toCategories());
-          }
-          return bookRepository.save(book);
+          if (CollectionUtils.isEmpty(categories)) book.setCategories(request.toCategories());
+          else categories.addAll(request.toCategories());
+          return bookDomainService.createOne(book);
         })
         .map(BookResponse::of);
   }
 
-  public Mono<Void> deleteBook(String bookId) {
-    return bookRepository.findById(bookId)
-        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
-        .flatMap(bookRepository::delete);
-  }
-
-  public Mono<BookResponse> likeOrHateBook(String bookId,
-                                           BookLikeOrHateRequest request,
-                                           AuthUser authUser) {
-    String userId = authUser.getId();
-    LikeOrHate likeOrHate = request.getLikeOrHate();
-    return bookLikeOrHateDomainService.likeOrHate(bookId, userId, likeOrHate)
-        .flatMap(read -> bookLikeOrHateDomainService.increaseCount(bookId, read.getLikeOrHate(), likeOrHate)
-            .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.NOT_FOUND_BOOK)))
-            .map(book -> BookResponse.of(book, likeOrHate)));
+  public Mono<Void> deleteBook(String bookId,
+                               AuthUser authUser) {
+    return bookDomainService.getOne(bookId)
+        .flatMap(bookDomainService::removeOne);
   }
 }

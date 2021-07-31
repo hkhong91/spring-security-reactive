@@ -1,6 +1,10 @@
 package com.example.demo.application.user.service;
 
-import com.example.demo.application.user.model.*;
+import com.example.demo.application.user.model.request.UserAuthorityRequest;
+import com.example.demo.application.user.model.request.UserSigninRequest;
+import com.example.demo.application.user.model.request.UserSignupRequest;
+import com.example.demo.application.user.model.response.UserResponse;
+import com.example.demo.application.user.model.response.UserSigninResponse;
 import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.application.user.security.JwtProvider;
 import com.example.demo.domain.user.repository.UserRepository;
@@ -11,8 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -41,15 +43,19 @@ public class UserService {
   }
 
   public Mono<Void> checkForEmail(String email) {
-    return userRepository.findByEmail(email)
-        .flatMap(user -> Objects.isNull(user) ? Mono.empty()
-            : Mono.error(new ServiceException(ServiceMessage.EXISTS_USER)));
+    return userRepository.countByEmail(email)
+        .flatMap(count -> {
+          if (count == 0) return Mono.empty();
+          else return Mono.error(new ServiceException(ServiceMessage.EXISTS_USER));
+        });
   }
 
   public Mono<Void> checkForName(String name) {
-    return userRepository.findByName(name)
-        .flatMap(user -> Objects.isNull(user) ? Mono.empty()
-            : Mono.error(new ServiceException(ServiceMessage.EXISTS_USER)));
+    return userRepository.countByName(name)
+        .flatMap(count -> {
+          if (count == 0) return Mono.empty();
+          else return Mono.error(new ServiceException(ServiceMessage.EXISTS_USER));
+        });
   }
 
   public Mono<UserResponse> addAuthority(UserAuthorityRequest request, AuthUser authUser) {

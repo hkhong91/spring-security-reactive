@@ -3,7 +3,7 @@ POST {{server}}/users/signin
 Content-Type: application/json
 
 {
-  "email": "hkhong91@gmail.com",
+  "email": "cjdeks@hanmail.net",
   "password": "abc1234!"
 }
 
@@ -12,21 +12,21 @@ POST {{server}}/users/signup
 Content-Type: application/json
 
 {
-  "email": "hkhong91@gmail.com",
-  "name": "홍아지",
+  "email": "cjdeks@hanmail.net",
+  "name": "청단",
   "gender": "M",
   "password": "abc1234!"
 }
 
 ### 이메일 체크
-GET {{server}}/users/email-check?email=cjdeks@hanmail.net
+GET {{server}}/users/email-check?email=hkhong91@gmail.com
 
 ### 이름 체크
 GET {{server}}/users/name-check?name=청
 
 ### 권한 추가
 POST {{server}}/users/me/authorities
-Authorization: {{jwt1}}
+Authorization: {{jwt2}}
 Content-Type: application/json
 
 {

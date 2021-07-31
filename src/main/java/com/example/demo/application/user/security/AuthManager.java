@@ -27,8 +27,7 @@ public class AuthManager implements ReactiveAuthenticationManager {
       return Mono.error(new ServiceException(ServiceMessage.UNAUTHORIZED));
     }
     try {
-      Authentication authenticate = jwtProvider.authenticate(credentials.toString());
-      return Mono.just(authenticate);
+      return jwtProvider.authenticate(credentials.toString());
     } catch (JWTVerificationException exception) {
       log.debug(exception.getMessage());
       return Mono.error(new ServiceException(ServiceMessage.UNAUTHORIZED));

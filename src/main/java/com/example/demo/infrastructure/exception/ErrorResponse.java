@@ -31,7 +31,7 @@ public class ErrorResponse {
   }
 
   public static ResponseEntity<ErrorResponse> entity(DomainException exception) {
-    log.warn("DomainException Message! {}", exception.getDomainMessage());
+    log.info("DomainException Message! {}", exception.getDomainMessage());
     DomainMessage domainMessage = exception.getDomainMessage();
     return ResponseEntity.status(domainMessage.getStatus())
         .body(ErrorResponse.builder()

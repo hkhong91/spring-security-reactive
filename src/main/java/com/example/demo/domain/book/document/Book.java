@@ -2,6 +2,7 @@ package com.example.demo.domain.book.document;
 
 import com.example.demo.domain.book.document.sub.Aggregation;
 import com.example.demo.domain.book.document.sub.Category;
+import com.example.demo.domain.book.document.sub.Creator;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +37,8 @@ public class Book {
   private String introduction;
 
   private Set<String> authors;
+
+  private Creator creator;
 
   private LocalDate publishedDate;
 

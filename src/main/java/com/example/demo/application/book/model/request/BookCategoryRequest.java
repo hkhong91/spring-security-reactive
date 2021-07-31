@@ -1,4 +1,4 @@
-package com.example.demo.application.book.model;
+package com.example.demo.application.book.model.request;
 
 import com.example.demo.domain.book.document.sub.Category;
 import com.example.demo.domain.book.value.CategoryCode;

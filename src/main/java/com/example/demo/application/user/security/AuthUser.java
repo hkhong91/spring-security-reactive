@@ -1,6 +1,8 @@
 package com.example.demo.application.user.security;
 
-import com.example.demo.domain.book.document.sub.Author;
+import com.example.demo.domain.book.document.sub.Creator;
+import com.example.demo.domain.user.document.User;
+import com.example.demo.domain.user.value.Authority;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,8 +22,20 @@ public class AuthUser implements UserDetails {
   private final String email;
   private final List<String> authorities;
 
-  public Author toAuthor() {
-    return Author.builder()
+  public static AuthUser of(User user) {
+    return AuthUser.builder()
+        .id(user.getId())
+        .name(user.getName())
+        .email(user.getEmail())
+        .authorities(user.getAuthorities()
+            .stream()
+            .map(Authority::name)
+            .collect(Collectors.toList()))
+        .build();
+  }
+
+  public Creator toCreator() {
+    return Creator.builder()
         .id(this.id)
         .name(this.name)
         .build();

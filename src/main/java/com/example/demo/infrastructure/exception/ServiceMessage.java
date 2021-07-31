@@ -13,8 +13,6 @@ public enum ServiceMessage {
   ACCESS_DENIED(HttpStatus.FORBIDDEN, "Access denied."),
   INPUT_ERROR(HttpStatus.BAD_REQUEST, "Input error."),
   VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "Fail validation"),
-  NOT_FOUND_BOOK(HttpStatus.NOT_FOUND, "Not found book."),
-  NOT_FOUND_BOOK_REVIEW(HttpStatus.NOT_FOUND, "Not found book review."),
   WRONG_USER(HttpStatus.UNAUTHORIZED, "Wrong user."),
   EXISTS_USER(HttpStatus.CONFLICT, "Exists user."),
   ;

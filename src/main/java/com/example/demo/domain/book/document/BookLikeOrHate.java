@@ -6,18 +6,17 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "BookRead")
+@Document(collection = "BookLikeOrHate")
 @CompoundIndex(name = "bookId_userId", def = "{'bookId': 1, 'userId': 1}", unique = true)
 @Getter
 @Setter
 @Builder
-public class BookRead {
+public class BookLikeOrHate {
 
   @Id
   private final String id;
@@ -29,20 +28,33 @@ public class BookRead {
   @CreatedDate
   private final LocalDateTime createdAt;
 
-  @LastModifiedDate
-  private final LocalDateTime updatedAt;
+  private LikeOrHate value;
 
-  private LikeOrHate likeOrHate;
-
-  public static BookRead of(String bookId, String userId) {
-    return of(bookId, userId, LikeOrHate.NONE);
-  }
-
-  public static BookRead of(String bookId, String userId, LikeOrHate likeOrHate) {
-    return BookRead.builder()
+  public static BookLikeOrHate of(String bookId, String userId, LikeOrHate value) {
+    return BookLikeOrHate.builder()
         .bookId(bookId)
         .userId(userId)
-        .likeOrHate(likeOrHate)
+        .value(value)
         .build();
+  }
+
+  public static BookLikeOrHate none(String bookId, String userId) {
+    return of(bookId, userId, null);
+  }
+
+  public static BookLikeOrHate like(String bookId, String userId) {
+    return of(bookId, userId, LikeOrHate.LIKE);
+  }
+
+  public static BookLikeOrHate hate(String bookId, String userId) {
+    return of(bookId, userId, LikeOrHate.HATE);
+  }
+
+  public boolean liked() {
+    return this.value == LikeOrHate.LIKE;
+  }
+
+  public boolean hated() {
+    return this.value == LikeOrHate.HATE;
   }
 }

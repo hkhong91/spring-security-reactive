@@ -1,4 +1,4 @@
-package com.example.demo.application.user.model;
+package com.example.demo.application.user.model.request;
 
 import com.example.demo.application.user.validation.Password;
 import com.example.demo.application.user.validation.UserName;

@@ -1,4 +1,4 @@
-package com.example.demo.application.user.model;
+package com.example.demo.application.user.model.response;
 
 import com.example.demo.application.user.security.JwtModel;
 import lombok.Builder;

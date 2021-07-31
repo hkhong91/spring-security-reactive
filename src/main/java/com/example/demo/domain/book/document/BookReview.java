@@ -1,6 +1,6 @@
 package com.example.demo.domain.book.document;
 
-import com.example.demo.domain.book.document.sub.Author;
+import com.example.demo.domain.book.document.sub.Creator;
 import com.example.demo.infrastructure.exception.DomainException;
 import com.example.demo.infrastructure.exception.DomainMessage;
 import lombok.Builder;
@@ -26,7 +26,7 @@ public class BookReview {
   @Indexed
   private final String bookId;
 
-  private final Author author;
+  private final Creator reviewer;
 
   @CreatedDate
   private final LocalDateTime createdAt;
@@ -46,6 +46,6 @@ public class BookReview {
 
   public void verify(String bookId, String userId) {
     this.verify(bookId);
-    this.author.verify(userId);
+    this.reviewer.verify(userId);
   }
 }

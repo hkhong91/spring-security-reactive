@@ -11,15 +11,15 @@ import org.springframework.data.mongodb.core.index.Indexed;
 @Getter
 @Setter
 @Builder
-public class Author {
+public class Creator {
 
   @Indexed
   private final String id;
 
   private String name;
 
-  public static Author of(AuthUser authUser) {
-    return Author.builder()
+  public static Creator of(AuthUser authUser) {
+    return Creator.builder()
         .id(authUser.getId())
         .name(authUser.getName())
         .build();

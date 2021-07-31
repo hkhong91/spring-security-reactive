@@ -1,24 +1,31 @@
 package com.example.demo.domain.book.service;
 
-import com.example.demo.domain.book.document.Book;
-import com.mongodb.client.result.UpdateResult;
+import com.example.demo.domain.book.document.BookReview;
+import com.example.demo.domain.book.repository.BookReviewRepository;
+import com.example.demo.infrastructure.exception.DomainException;
+import com.example.demo.infrastructure.exception.DomainMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
 public class BookReviewDomainService {
 
-  private final ReactiveMongoTemplate mongoTemplate;
+  private final BookReviewRepository bookReviewRepository;
 
-  public Mono<UpdateResult> increaseCount(String bookId, int inc) {
-    Query query = Query.query(Criteria.where("id").is(bookId));
-    Update update = new Update().inc("aggregation.reviewCount", inc);
-    return mongoTemplate.upsert(query, update, Book.class);
+  public Mono<BookReview> getReview(String reviewId) {
+    return bookReviewRepository.findById(reviewId)
+        .switchIfEmpty(Mono.error(new DomainException(DomainMessage.NOT_FOUND_BOOK_REVIEW)));
+  }
+
+  public Flux<BookReview> getReviews(String bookId) {
+    return bookReviewRepository.findAllByBookId(bookId)
+        .switchIfEmpty(Flux.empty());
+  }
+
+  public Mono<BookReview> createReview(BookReview review) {
+    return bookReviewRepository.save(review);
   }
 }
