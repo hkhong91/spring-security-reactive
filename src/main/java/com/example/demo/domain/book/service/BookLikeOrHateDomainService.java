@@ -3,7 +3,6 @@ package com.example.demo.domain.book.service;
 import com.example.demo.domain.book.document.BookLikeOrHate;
 import com.example.demo.domain.book.repository.BookLikeOrHateRepository;
 import com.example.demo.domain.book.value.LikeOrHate;
-import com.example.demo.infrastructure.exception.DomainException;
 import com.example.demo.infrastructure.exception.DomainMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ public class BookLikeOrHateDomainService {
 
   public Mono<BookLikeOrHate> getOne(String likeOrHateId) {
     return bookLikeOrHateRepository.findById(likeOrHateId)
-        .switchIfEmpty(Mono.error(new DomainException(DomainMessage.NOT_LIKED_OR_HATED_BOOK)));
+        .switchIfEmpty(DomainMessage.NOT_LIKED_OR_HATED_BOOK.error());
   }
 
   public Mono<BookLikeOrHate> getOneOrDefault(String bookId, String userId) {
@@ -54,7 +53,7 @@ public class BookLikeOrHateDomainService {
     return this.getOne(likeOrHateId)
         .flatMap(hate -> {
           if (hate.liked()) {
-            return Mono.error(new DomainException(DomainMessage.ALREADY_LIKED_BOOK));
+            return DomainMessage.ALREADY_LIKED_BOOK.error();
           }
           hate.setValue(LikeOrHate.LIKE);
           return this.createOne(hate);
@@ -64,7 +63,7 @@ public class BookLikeOrHateDomainService {
   public Mono<Void> unlikeOne(String likeOrHateId) {
     return this.getOne(likeOrHateId)
         .flatMap(like -> {
-          if (like.hated()) return Mono.error(new DomainException(DomainMessage.NOT_LIKED_BOOK));
+          if (like.hated()) return DomainMessage.NOT_LIKED_BOOK.error();
           else return this.removeOne(like);
         });
   }
@@ -77,7 +76,7 @@ public class BookLikeOrHateDomainService {
     return this.getOne(likeOrHateId)
         .flatMap(like -> {
           if (like.hated()) {
-            return Mono.error(new DomainException(DomainMessage.ALREADY_HATED_BOOK));
+            return DomainMessage.ALREADY_HATED_BOOK.error();
           }
           like.setValue(LikeOrHate.HATE);
           return this.createOne(like);
@@ -87,7 +86,7 @@ public class BookLikeOrHateDomainService {
   public Mono<Void> unhateOne(String likeOrHateId) {
     return this.getOne(likeOrHateId)
         .flatMap(hate -> {
-          if (hate.liked()) return Mono.error(new DomainException(DomainMessage.NOT_HATED_BOOK));
+          if (hate.liked()) return DomainMessage.NOT_HATED_BOOK.error();
           else return this.removeOne(hate);
         });
   }

@@ -1,7 +1,6 @@
 package com.example.demo.application.user.security;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.example.demo.infrastructure.exception.ServiceException;
 import com.example.demo.infrastructure.exception.ServiceMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +23,13 @@ public class AuthManager implements ReactiveAuthenticationManager {
     Object credentials = authentication.getCredentials();
     log.debug("Authenticate credentials: {}", credentials);
     if (Objects.isNull(credentials)) {
-      return Mono.error(new ServiceException(ServiceMessage.UNAUTHORIZED));
+      return ServiceMessage.UNAUTHORIZED.error();
     }
     try {
       return jwtProvider.authenticate(credentials.toString());
     } catch (JWTVerificationException exception) {
       log.debug(exception.getMessage());
-      return Mono.error(new ServiceException(ServiceMessage.UNAUTHORIZED));
+      return ServiceMessage.UNAUTHORIZED.error();
     }
   }
 }

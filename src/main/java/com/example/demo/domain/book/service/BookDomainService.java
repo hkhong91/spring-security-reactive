@@ -2,7 +2,6 @@ package com.example.demo.domain.book.service;
 
 import com.example.demo.domain.book.document.Book;
 import com.example.demo.domain.book.repository.BookRepository;
-import com.example.demo.infrastructure.exception.DomainException;
 import com.example.demo.infrastructure.exception.DomainMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class BookDomainService {
 
   public Mono<Book> getOne(String bookId) {
     return bookRepository.findById(bookId)
-        .switchIfEmpty(Mono.error(new DomainException(DomainMessage.NOT_FOUND_BOOK)));
+        .switchIfEmpty(DomainMessage.NOT_FOUND_BOOK.error());
   }
 
   public Flux<Book> getList() {

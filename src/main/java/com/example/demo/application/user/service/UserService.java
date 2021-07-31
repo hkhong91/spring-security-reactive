@@ -8,7 +8,6 @@ import com.example.demo.application.user.model.response.UserSigninResponse;
 import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.application.user.security.JwtProvider;
 import com.example.demo.domain.user.repository.UserRepository;
-import com.example.demo.infrastructure.exception.ServiceException;
 import com.example.demo.infrastructure.exception.ServiceMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +26,10 @@ public class UserService {
 
   public Mono<UserSigninResponse> signin(UserSigninRequest request) {
     return userRepository.findByEmail(request.getEmail())
-        .switchIfEmpty(Mono.error(new ServiceException(ServiceMessage.WRONG_USER)))
+        .switchIfEmpty(ServiceMessage.WRONG_USER.error())
         .flatMap(user -> {
           if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return Mono.error(new ServiceException(ServiceMessage.WRONG_USER));
+            return ServiceMessage.WRONG_USER.error();
           }
           return Mono.just(jwtProvider.generate(user));
         })
@@ -46,7 +45,7 @@ public class UserService {
     return userRepository.countByEmail(email)
         .flatMap(count -> {
           if (count == 0) return Mono.empty();
-          else return Mono.error(new ServiceException(ServiceMessage.EXISTS_USER));
+          else return ServiceMessage.EXISTS_USER.error();
         });
   }
 
@@ -54,7 +53,7 @@ public class UserService {
     return userRepository.countByName(name)
         .flatMap(count -> {
           if (count == 0) return Mono.empty();
-          else return Mono.error(new ServiceException(ServiceMessage.EXISTS_USER));
+          else return ServiceMessage.EXISTS_USER.error();
         });
   }
 

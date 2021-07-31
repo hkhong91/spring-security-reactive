@@ -3,6 +3,7 @@ package com.example.demo.infrastructure.exception;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import reactor.core.publisher.Mono;
 
 @Getter
 @RequiredArgsConstructor
@@ -19,4 +20,12 @@ public enum ServiceMessage {
 
   private final HttpStatus status;
   private final String defaultMessage;
+
+  public ServiceException exception() {
+    return new ServiceException(this);
+  }
+
+  public <T> Mono<T> error() {
+    return Mono.error(this.exception());
+  }
 }

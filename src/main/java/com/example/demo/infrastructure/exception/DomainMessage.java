@@ -3,6 +3,7 @@ package com.example.demo.infrastructure.exception;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import reactor.core.publisher.Mono;
 
 @Getter
 @RequiredArgsConstructor
@@ -22,4 +23,12 @@ public enum DomainMessage {
 
   private final HttpStatus status;
   private final String defaultMessage;
+
+  public DomainException exception() {
+    return new DomainException(this);
+  }
+
+  public <T> Mono<T> error() {
+    return Mono.error(this.exception());
+  }
 }
