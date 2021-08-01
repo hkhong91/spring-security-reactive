@@ -2,12 +2,14 @@ package com.example.demo.application.book.service;
 
 import com.example.demo.application.book.model.request.BookCategoryRequest;
 import com.example.demo.application.book.model.request.BookRequest;
+import com.example.demo.application.book.model.response.BookHitAggregationResponse;
 import com.example.demo.application.book.model.response.BookReadResponse;
 import com.example.demo.application.book.model.response.BookResponse;
 import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.domain.book.document.Book;
 import com.example.demo.domain.book.document.sub.Category;
 import com.example.demo.domain.book.service.BookDomainService;
+import com.example.demo.domain.book.service.BookHitDomainService;
 import com.example.demo.domain.book.service.BookLikeOrHateDomainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,17 +27,20 @@ import java.util.Set;
 public class BookService {
 
   private final BookDomainService bookDomainService;
+  private final BookHitDomainService bookHitDomainService;
   private final BookLikeOrHateDomainService bookLikeOrHateDomainService;
 
-  public Mono<BookResponse> getBook(String bookId) {
-    return bookDomainService.getOne(bookId)
+  public Mono<BookResponse> getBook(String bookId,
+                                    String ip) {
+    return bookDomainService.hitOne(bookId, ip)
         .map(BookResponse::of);
   }
 
   public Mono<BookReadResponse> getBook(String bookId,
-                                        AuthUser authUser) {
+                                        AuthUser authUser,
+                                        String ip) {
     String userId = authUser.getId();
-    return bookDomainService.getOne(bookId)
+    return bookDomainService.hitOne(bookId, ip)
         .zipWith(bookLikeOrHateDomainService.getOneOrDefault(bookId, userId))
         .map(TupleUtils.function(BookReadResponse::of));
   }
@@ -90,5 +95,10 @@ public class BookService {
                                AuthUser authUser) {
     return bookDomainService.getOne(bookId)
         .flatMap(bookDomainService::removeOne);
+  }
+
+  public Flux<BookHitAggregationResponse> aggregateHits() {
+    return bookHitDomainService.aggregate()
+        .map(BookHitAggregationResponse::of);
   }
 }

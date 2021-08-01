@@ -13,10 +13,16 @@ import reactor.core.publisher.Mono;
 public class BookDomainService {
 
   private final BookRepository bookRepository;
+  private final BookHitDomainService bookHitDomainService;
 
   public Mono<Book> getOne(String bookId) {
     return bookRepository.findById(bookId)
         .switchIfEmpty(DomainMessage.NOT_FOUND_BOOK.error());
+  }
+
+  public Mono<Book> hitOne(String bookId, String ip) {
+    return this.getOne(bookId)
+        .doOnNext(book -> bookHitDomainService.hit(bookId, ip).subscribe());
   }
 
   public Flux<Book> getList() {

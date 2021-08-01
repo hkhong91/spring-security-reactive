@@ -2,6 +2,7 @@ package com.example.demo.application.book.controller;
 
 import com.example.demo.application.book.model.request.BookCategoryRequest;
 import com.example.demo.application.book.model.request.BookRequest;
+import com.example.demo.application.book.model.response.BookHitAggregationResponse;
 import com.example.demo.application.book.model.response.BookReadResponse;
 import com.example.demo.application.book.model.response.BookResponse;
 import com.example.demo.application.book.service.BookService;
@@ -28,14 +29,14 @@ public class BookController {
   @GetMapping("/books/{bookId}")
   public Mono<BookResponse> getBook(@PathVariable String bookId,
                                     @ClientIp String clientIp) {
-    return bookService.getBook(bookId);
+    return bookService.getBook(bookId, clientIp);
   }
 
   @GetMapping("/books/{bookId}/read")
   public Mono<BookReadResponse> getBook(@PathVariable String bookId,
                                         @AuthenticationPrincipal AuthUser authUser,
                                         @ClientIp String clientIp) {
-    return bookService.getBook(bookId, authUser);
+    return bookService.getBook(bookId, authUser, clientIp);
   }
 
   @GetMapping("/books")
@@ -76,5 +77,10 @@ public class BookController {
   public Mono<Void> deleteBook(@PathVariable String bookId,
                                @AuthenticationPrincipal AuthUser authUser) {
     return bookService.deleteBook(bookId, authUser);
+  }
+
+  @PutMapping("/books/hits")
+  public Flux<BookHitAggregationResponse> aggregateHits() {
+    return bookService.aggregateHits();
   }
 }

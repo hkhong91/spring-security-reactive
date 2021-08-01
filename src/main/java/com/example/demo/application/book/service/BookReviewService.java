@@ -31,7 +31,7 @@ public class BookReviewService {
                                                AuthUser authUser) {
     return bookDomainService.getOne(bookId)
         .flatMap(book -> bookReviewDomainService.createReview(request.toReview(book.getId(), authUser)))
-        .doOnNext(review -> bookAggregationDomainService.review(bookId, 1).subscribe())
+        .doOnNext(review -> bookAggregationDomainService.review(bookId).subscribe())
         .map(BookReviewResponse::of);
   }
 

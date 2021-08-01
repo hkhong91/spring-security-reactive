@@ -12,10 +12,13 @@ public class Aggregation {
   public static final String LIKE_COUNT = "aggregation.likeCount";
   public static final String HATE_COUNT = "aggregation.hateCount";
   public static final String REVIEW_COUNT = "aggregation.reviewCount";
+  public static final String HIT_COUNT = "aggregation.hitCount";
 
   private int likeCount;
 
   private int hateCount;
 
   private int reviewCount;
+
+  private int hitCount;
 }

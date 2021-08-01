@@ -2,7 +2,7 @@
 GET {{server}}/books/61051fa985de2038eccc5393
 
 ### 책 조회
-GET {{server}}/books/61051fa985de2038eccc5393/read
+GET {{server}}/books/61053b9f1f8efc2768bf2001/read
 Authorization: {{jwt1}}
 
 ### 책 리스트 조회
@@ -58,3 +58,6 @@ Content-Type: application/json
 ### 책 삭제
 DELETE {{server}}/books/60fcc372030699554e4e66c5
 Authorization: {{jwt1}}
+
+### 책 조회수 집계
+PUT {{server}}/books/hits

@@ -5,11 +5,15 @@ spring:
       auto-index-creation: true
   redis:
     host: localhost
+    port: 6379
+    password: admin12#$
+    database: 0
 logging:
   level:
     ROOT: INFO
     com.example.demo: DEBUG
     org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG
+    redis.clients: TRACE
 jwt:
   secret-key: BAIGQN15FJFA9FQNNZOQ7IFJOJ9385FQMBOPQZMVNJKD5350JAFFWPQN
   expires: 24

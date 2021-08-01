@@ -52,8 +52,13 @@ public class BookAggregationDomainService {
     return bookRepository.upsertById(bookId, update);
   }
 
-  public Mono<UpdateResult> review(String bookId, int inc) {
-    Update update = new Update().inc(Aggregation.REVIEW_COUNT, inc);
+  public Mono<UpdateResult> review(String bookId) {
+    Update update = new Update().inc(Aggregation.REVIEW_COUNT, 1);
+    return bookRepository.upsertById(bookId, update);
+  }
+
+  public Mono<UpdateResult> hit(String bookId, int inc) {
+    Update update = new Update().inc(Aggregation.HIT_COUNT, inc);
     return bookRepository.upsertById(bookId, update);
   }
 }
