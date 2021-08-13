@@ -2,7 +2,7 @@
 GET {{server}}/books/60fc292745ed2c1c3058ff79/reviews
 
 ### 댓글 작성
-POST {{server}}/books/60fc292745ed2c1c3058ff79/reviews
+POST {{server}}/books/61051fa985de2038eccc5393/reviews
 Authorization: {{jwt1}}
 Content-Type: application/json
 

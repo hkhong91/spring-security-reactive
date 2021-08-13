@@ -36,9 +36,9 @@ public class BookService {
         .map(BookResponse::of);
   }
 
-  public Mono<BookReadResponse> getBook(String bookId,
-                                        AuthUser authUser,
-                                        String ip) {
+  public Mono<BookReadResponse> readBook(String bookId,
+                                         AuthUser authUser,
+                                         String ip) {
     String userId = authUser.getId();
     return bookDomainService.hitOne(bookId, ip)
         .zipWith(bookLikeOrHateDomainService.getOneOrDefault(bookId, userId))
@@ -50,7 +50,7 @@ public class BookService {
         .map(BookResponse::of);
   }
 
-  public Flux<BookReadResponse> getBooks(AuthUser authUser) {
+  public Flux<BookReadResponse> readBooks(AuthUser authUser) {
     String userId = authUser.getId();
     return bookDomainService.getList()
         .collectMap(Book::getId, book -> book)

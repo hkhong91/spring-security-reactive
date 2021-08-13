@@ -1,4 +1,4 @@
-package com.example.demo.infrastructure.exception;
+package com.example.demo.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;

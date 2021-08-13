@@ -8,7 +8,7 @@ import com.example.demo.application.user.model.response.UserSigninResponse;
 import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.application.user.security.JwtProvider;
 import com.example.demo.domain.user.repository.UserRepository;
-import com.example.demo.infrastructure.exception.ServiceMessage;
+import com.example.demo.exception.ServiceMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,8 +1,8 @@
 package com.example.demo.domain.book.document;
 
 import com.example.demo.domain.book.document.sub.Creator;
-import com.example.demo.infrastructure.exception.DomainException;
-import com.example.demo.infrastructure.exception.DomainMessage;
+import com.example.demo.exception.DomainException;
+import com.example.demo.exception.DomainMessage;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

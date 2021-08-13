@@ -5,13 +5,17 @@ import com.example.demo.application.user.validation.UserName;
 import com.example.demo.domain.user.document.User;
 import com.example.demo.domain.user.value.Authority;
 import com.example.demo.domain.user.value.Gender;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import java.util.Collections;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserSignupRequest {
 
   @Email

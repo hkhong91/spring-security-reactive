@@ -1,7 +1,7 @@
 package com.example.demo.application.user.security;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.example.demo.infrastructure.exception.ServiceMessage;
+import com.example.demo.exception.ServiceMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;

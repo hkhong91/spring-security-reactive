@@ -3,7 +3,7 @@ package com.example.demo.domain.book.service;
 import com.example.demo.domain.book.document.BookLikeOrHate;
 import com.example.demo.domain.book.repository.BookLikeOrHateRepository;
 import com.example.demo.domain.book.value.LikeOrHate;
-import com.example.demo.infrastructure.exception.DomainMessage;
+import com.example.demo.exception.DomainMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

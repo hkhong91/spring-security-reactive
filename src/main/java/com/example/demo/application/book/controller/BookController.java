@@ -33,10 +33,10 @@ public class BookController {
   }
 
   @GetMapping("/books/{bookId}/read")
-  public Mono<BookReadResponse> getBook(@PathVariable String bookId,
-                                        @AuthenticationPrincipal AuthUser authUser,
-                                        @ClientIp String clientIp) {
-    return bookService.getBook(bookId, authUser, clientIp);
+  public Mono<BookReadResponse> readBook(@PathVariable String bookId,
+                                         @AuthenticationPrincipal AuthUser authUser,
+                                         @ClientIp String clientIp) {
+    return bookService.readBook(bookId, authUser, clientIp);
   }
 
   @GetMapping("/books")
@@ -45,8 +45,8 @@ public class BookController {
   }
 
   @GetMapping("/books/read")
-  public Flux<BookReadResponse> getBooks(@AuthenticationPrincipal AuthUser authUser) {
-    return bookService.getBooks(authUser);
+  public Flux<BookReadResponse> readBooks(@AuthenticationPrincipal AuthUser authUser) {
+    return bookService.readBooks(authUser);
   }
 
   @PostMapping("/books")
