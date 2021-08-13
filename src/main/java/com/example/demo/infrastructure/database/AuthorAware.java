@@ -1,7 +1,7 @@
 package com.example.demo.infrastructure.database;
 
-import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.domain.book.document.sub.Creator;
+import com.example.demo.infrastructure.security.AuthUser;
 import lombok.NonNull;
 import org.springframework.data.domain.ReactiveAuditorAware;
 import org.springframework.security.core.Authentication;

@@ -1,6 +1,6 @@
 package com.example.demo.application.user.model.response;
 
-import com.example.demo.application.user.security.JwtModel;
+import com.example.demo.infrastructure.security.JwtModel;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -6,8 +6,8 @@ import com.example.demo.application.book.model.response.BookHitAggregationRespon
 import com.example.demo.application.book.model.response.BookReadResponse;
 import com.example.demo.application.book.model.response.BookResponse;
 import com.example.demo.application.book.service.BookService;
-import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.domain.user.value.Authority;
+import com.example.demo.infrastructure.security.AuthUser;
 import com.example.demo.infrastructure.webflux.ClientIp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

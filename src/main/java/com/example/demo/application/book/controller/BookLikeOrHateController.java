@@ -2,7 +2,7 @@ package com.example.demo.application.book.controller;
 
 import com.example.demo.application.book.model.response.BookLikeOrHateResponse;
 import com.example.demo.application.book.service.BookLikeOrHateService;
-import com.example.demo.application.user.security.AuthUser;
+import com.example.demo.infrastructure.security.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;

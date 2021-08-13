@@ -1,13 +1,13 @@
-package com.example.demo.application.user.security;
+package com.example.demo.infrastructure.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.demo.application.ServiceException;
+import com.example.demo.application.ServiceMessage;
 import com.example.demo.domain.user.document.User;
 import com.example.demo.domain.user.repository.UserRepository;
-import com.example.demo.exception.ServiceException;
-import com.example.demo.exception.ServiceMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,9 +28,12 @@ public class JwtProvider {
 
   private static final String TYPE = "Bearer";
   private static final String ID = "id";
+
   private final UserRepository userRepository;
+
   @Value("${jwt.secret-key}")
   private String secretKey;
+
   @Value("${jwt.expires}")
   private long expires;
 

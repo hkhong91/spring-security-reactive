@@ -2,10 +2,10 @@ package com.example.demo.application.book.service;
 
 import com.example.demo.application.book.model.request.BookReviewRequest;
 import com.example.demo.application.book.model.response.BookReviewResponse;
-import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.domain.book.service.BookAggregationDomainService;
 import com.example.demo.domain.book.service.BookDomainService;
 import com.example.demo.domain.book.service.BookReviewDomainService;
+import com.example.demo.infrastructure.security.AuthUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

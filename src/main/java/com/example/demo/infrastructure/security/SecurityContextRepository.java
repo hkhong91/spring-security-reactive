@@ -1,4 +1,4 @@
-package com.example.demo.application.user.security;
+package com.example.demo.infrastructure.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

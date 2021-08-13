@@ -1,8 +1,8 @@
 package com.example.demo.domain.book.service;
 
+import com.example.demo.domain.DomainMessage;
 import com.example.demo.domain.book.document.Book;
 import com.example.demo.domain.book.repository.BookRepository;
-import com.example.demo.exception.DomainMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

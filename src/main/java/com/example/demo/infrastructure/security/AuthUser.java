@@ -1,4 +1,4 @@
-package com.example.demo.application.user.security;
+package com.example.demo.infrastructure.security;
 
 import com.example.demo.domain.book.document.sub.Creator;
 import com.example.demo.domain.user.document.User;

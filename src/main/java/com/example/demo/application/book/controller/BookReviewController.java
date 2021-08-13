@@ -3,7 +3,7 @@ package com.example.demo.application.book.controller;
 import com.example.demo.application.book.model.request.BookReviewRequest;
 import com.example.demo.application.book.model.response.BookReviewResponse;
 import com.example.demo.application.book.service.BookReviewService;
-import com.example.demo.application.user.security.AuthUser;
+import com.example.demo.infrastructure.security.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;

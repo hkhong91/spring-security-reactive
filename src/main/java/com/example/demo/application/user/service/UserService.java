@@ -1,14 +1,14 @@
 package com.example.demo.application.user.service;
 
+import com.example.demo.application.ServiceMessage;
 import com.example.demo.application.user.model.request.UserAuthorityRequest;
 import com.example.demo.application.user.model.request.UserSigninRequest;
 import com.example.demo.application.user.model.request.UserSignupRequest;
 import com.example.demo.application.user.model.response.UserResponse;
 import com.example.demo.application.user.model.response.UserSigninResponse;
-import com.example.demo.application.user.security.AuthUser;
-import com.example.demo.application.user.security.JwtProvider;
 import com.example.demo.domain.user.repository.UserRepository;
-import com.example.demo.exception.ServiceMessage;
+import com.example.demo.infrastructure.security.AuthUser;
+import com.example.demo.infrastructure.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

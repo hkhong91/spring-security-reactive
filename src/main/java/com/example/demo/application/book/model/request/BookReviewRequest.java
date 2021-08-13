@@ -1,7 +1,7 @@
 package com.example.demo.application.book.model.request;
 
-import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.domain.book.document.BookReview;
+import com.example.demo.infrastructure.security.AuthUser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

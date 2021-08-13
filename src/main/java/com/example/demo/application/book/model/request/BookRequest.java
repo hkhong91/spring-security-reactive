@@ -1,8 +1,8 @@
 package com.example.demo.application.book.model.request;
 
-import com.example.demo.application.user.security.AuthUser;
 import com.example.demo.domain.book.document.Book;
 import com.example.demo.domain.book.document.sub.Aggregation;
+import com.example.demo.infrastructure.security.AuthUser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

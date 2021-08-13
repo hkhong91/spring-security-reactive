@@ -1,5 +1,7 @@
-package com.example.demo.exception;
+package com.example.demo.application;
 
+import com.example.demo.domain.DomainException;
+import com.example.demo.domain.DomainMessage;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
