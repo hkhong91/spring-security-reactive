@@ -5,6 +5,7 @@ import com.example.demo.domain.DomainMessage;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.ObjectError;
@@ -44,11 +45,11 @@ public class ErrorResponse {
 
   public static ResponseEntity<ErrorResponse> entity(ServerWebInputException exception) {
     log.warn("ServerWebInputException! {}", exception.getClass().getSimpleName());
-    ServiceMessage serviceMessage = ServiceMessage.INPUT_ERROR;
+    String errorName = exception.getClass().getSimpleName();
     if (exception instanceof WebExchangeBindException) {
       return ResponseEntity.status(exception.getStatus())
           .body(ErrorResponse.builder()
-              .name(serviceMessage.name())
+              .name(errorName)
               .message(((WebExchangeBindException) exception).getBindingResult()
                   .getAllErrors()
                   .stream()
@@ -58,38 +59,35 @@ public class ErrorResponse {
     }
     return ResponseEntity.status(exception.getStatus())
         .body(ErrorResponse.builder()
-            .name(serviceMessage.name())
+            .name(errorName)
             .message(exception.getReason())
             .build());
   }
 
   public static ResponseEntity<ErrorResponse> entity(ValidationException exception) {
     log.warn("ValidationException! {}", exception.getClass().getSimpleName());
-    ServiceMessage serviceMessage = ServiceMessage.VALIDATION_ERROR;
-    return ResponseEntity.status(serviceMessage.getStatus())
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
         .body(ErrorResponse.builder()
-            .name(serviceMessage.name())
+            .name(exception.getClass().getSimpleName())
             .message(exception.getMessage())
             .build());
   }
 
   public static ResponseEntity<ErrorResponse> entity(AccessDeniedException exception) {
     log.warn("AccessDeniedException! {}", exception.getMessage());
-    ServiceMessage serviceMessage = ServiceMessage.ACCESS_DENIED;
-    return ResponseEntity.status(serviceMessage.getStatus())
+    return ResponseEntity.status(HttpStatus.FORBIDDEN)
         .body(ErrorResponse.builder()
-            .name(serviceMessage.name())
-            .message(serviceMessage.getDefaultMessage())
+            .name(exception.getClass().getSimpleName())
+            .message(exception.getMessage())
             .build());
   }
 
   public static ResponseEntity<ErrorResponse> entity(Exception exception) {
     log.error(exception.getMessage(), exception);
-    ServiceMessage serviceMessage = ServiceMessage.SERVER_ERROR;
-    return ResponseEntity.status(serviceMessage.getStatus())
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(ErrorResponse.builder()
-            .name(serviceMessage.name())
-            .message(serviceMessage.getDefaultMessage())
+            .name(exception.getClass().getSimpleName())
+            .message(exception.getMessage())
             .build());
   }
 }
