@@ -23,7 +23,9 @@ Content-Type: application/json
   "authors": [
     "크리스티나 초도로우"
   ],
-  "publishedDate": "2021-03-22"
+  "publishedDate": "2021-03-22",
+  "price": 12000,
+  "stock": 10
 }
 
 ### 책 수정
@@ -41,7 +43,9 @@ Content-Type: application/json
     "덕 개릿",
     "팀 호킨스"
   ],
-  "publishedDate": "2021-05-02"
+  "publishedDate": "2021-05-02",
+  "price": 12000,
+  "stock": 10
 }
 
 ### 책 카테고리 추가

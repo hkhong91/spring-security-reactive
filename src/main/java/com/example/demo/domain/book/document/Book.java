@@ -45,4 +45,8 @@ public class Book {
   private LocalDate publishedDate;
 
   private Aggregation aggregation;
+
+  private Integer price;
+
+  private Integer stock;
 }
