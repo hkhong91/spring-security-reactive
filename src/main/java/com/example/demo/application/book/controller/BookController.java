@@ -50,14 +50,14 @@ public class BookController {
   }
 
   @PostMapping("/books")
-  @PreAuthorize(Authority.Has.ADMIN)
+  @PreAuthorize(Authority.Has.SELLER)
   public Mono<BookResponse> createBook(@RequestBody BookRequest request,
                                        @AuthenticationPrincipal AuthUser authUser) {
     return bookService.createBook(request, authUser);
   }
 
   @PatchMapping("/books/{bookId}")
-  @PreAuthorize(Authority.Has.ADMIN)
+  @PreAuthorize(Authority.Has.SELLER)
   public Mono<BookResponse> updateBook(@PathVariable String bookId,
                                        @RequestBody BookRequest request,
                                        @AuthenticationPrincipal AuthUser authUser) {
@@ -65,7 +65,7 @@ public class BookController {
   }
 
   @PutMapping("/books/{bookId}/categories")
-  @PreAuthorize(Authority.Has.ADMIN)
+  @PreAuthorize(Authority.Has.SELLER)
   public Mono<BookResponse> addBookCategories(@PathVariable String bookId,
                                               @RequestBody @Valid BookCategoryRequest request,
                                               @AuthenticationPrincipal AuthUser authUser) {
@@ -73,7 +73,7 @@ public class BookController {
   }
 
   @DeleteMapping("/books/{bookId}")
-  @PreAuthorize(Authority.Has.ADMIN)
+  @PreAuthorize(Authority.Has.SELLER)
   public Mono<Void> deleteBook(@PathVariable String bookId,
                                @AuthenticationPrincipal AuthUser authUser) {
     return bookService.deleteBook(bookId, authUser);

@@ -73,7 +73,7 @@ class UserControllerTest extends AbstractControllerTest {
     client.post()
         .uri("/users/me/authorities")
         .header("Authorization", JWT)
-        .bodyValue(new UserAuthorityRequest(Authority.ADMIN))
+        .bodyValue(new UserAuthorityRequest(Authority.SELLER))
         .exchange()
         .expectStatus()
         .isOk()
