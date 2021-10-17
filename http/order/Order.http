@@ -1,0 +1,14 @@
+### 주문
+POST http://localhost:8080/orders
+Authorization: {{jwt1}}
+Content-Type: application/json
+
+{
+  "orderedBooks": [
+    {
+      "bookId": "616bad1c23e27046eabba6ec",
+      "sellerId": "616bace323e27046eabba6eb",
+      "price": 12000
+    }
+  ]
+}

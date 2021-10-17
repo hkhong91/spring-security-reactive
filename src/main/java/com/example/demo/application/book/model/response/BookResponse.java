@@ -3,6 +3,7 @@ package com.example.demo.application.book.model.response;
 import com.example.demo.domain.book.document.Book;
 import com.example.demo.domain.book.document.sub.Aggregation;
 import com.example.demo.domain.book.document.sub.Category;
+import com.example.demo.domain.book.document.sub.Creator;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
@@ -19,6 +20,7 @@ public class BookResponse {
   private final Set<String> authors;
   private final Set<Category> categories;
   private final LocalDate publishedDate;
+  private final Creator creator;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
   private final Aggregation aggregation;
@@ -30,6 +32,7 @@ public class BookResponse {
         .authors(book.getAuthors())
         .categories(book.getCategories())
         .publishedDate(book.getPublishedDate())
+        .creator(book.getCreator())
         .createdAt(book.getCreatedAt())
         .updatedAt(book.getUpdatedAt())
         .aggregation(book.getAggregation())

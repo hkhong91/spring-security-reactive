@@ -30,5 +30,5 @@ Authorization: {{jwt2}}
 Content-Type: application/json
 
 {
-  "authority": "ADMIN"
+  "authority": "SELLER"
 }
