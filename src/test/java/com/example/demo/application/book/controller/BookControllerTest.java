@@ -68,7 +68,9 @@ class BookControllerTest extends AbstractControllerTest {
             "Kotlin 200제",
             "프로그래밍 입문자의 시선으로 쓴 코틀린 문법서!",
             Set.of("엄민석"),
-            LocalDate.of(2018, 5, 15)))
+            LocalDate.of(2018, 5, 15),
+            10000,
+            10))
         .exchange()
         .expectStatus()
         .isOk()
@@ -85,7 +87,9 @@ class BookControllerTest extends AbstractControllerTest {
             "자바 최적화",
             "가장 빠른 성능을 구현하는 검증된 10가지 기법",
             Set.of("벤저민 J. 에번스", "제임스 고프", "크리스 뉴랜드"),
-            LocalDate.of(2019, 4, 29)))
+            LocalDate.of(2019, 4, 29),
+            20000,
+            10))
         .exchange()
         .expectStatus()
         .isOk()
