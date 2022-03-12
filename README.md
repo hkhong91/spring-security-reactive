@@ -1,25 +1,15 @@
-# Spring Webflux
+# Social Networking Service
 
-### User
+To run the application, you need to install DBs.
 
-* 유저 로그인
-* 유저 가입
-* 유저 메일 중복
-* 유저 이름 중복
-* 유저 권한 추가
+<pre>
+docker-compose -f up -d
+</pre>
 
-### Book
+Access the mongodb cli and initiates set with default settings.
 
-* 책 등록/조회/수정/삭제
-* 책 카테고리 추가
-* 책 히트
-* 책 좋아요/싫어요
-* 책 리뷰 등록/조회/수정/삭제
+<pre>
+rs.initiate()
+</pre>
 
-### Category
-
-* 카테고리 조회
-
-### Order
-
-* 주문
+If the commands are executed in order, the application will run.
