@@ -1,4 +1,4 @@
-# Social Networking Service
+# Spring Security for Reactive Application
 
 To run the application, you need to install DBs.
 
